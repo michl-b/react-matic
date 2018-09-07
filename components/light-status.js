@@ -1,0 +1,14 @@
+import styled from 'styled-components'
+import { size } from 'polished'
+
+export default styled.span`
+  background-color: ${props => props.active ? props.theme.palette.lightOnColor : props.theme.palette.disabledColor};
+  color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
+  ${size('4em')}
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+`

@@ -1,0 +1,85 @@
+{
+  "name": "react-matic",
+  "version": "1.0.0",
+  "description": "React based Homematic UI",
+  "main": "pages/index.js",
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "lint": "standard --verbose | snazzy && stylelint '**/*.js'",
+    "test": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michl-b/react-matic.git"
+  },
+  "keywords": [
+    "homematic ip",
+    "homematic"
+  ],
+  "author": "Michael Bartsch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michl-b/react-matic/issues"
+  },
+  "homepage": "https://github.com/michl-b/react-matic#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-plugin-styled-components": "^1.5.1",
+    "dotenv-webpack": "^1.5.7",
+    "isomorphic-unfetch": "^2.1.1",
+    "jquery": "^3.3.1",
+    "js-base64": "^2.4.8",
+    "next": "^6.1.1",
+    "polished": "^1.9.3",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "styled-button-component": "^2.0.0",
+    "styled-components": "^3.4.2",
+    "styled-container-component": "^2.0.0",
+    "styled-navbar-component": "^2.0.0",
+    "styled-system": "^2.3.6",
+    "tinytime": "^0.2.6",
+    "xml2js": "^0.4.19",
+    "yup": "^0.25.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "snazzy": "^7.1.1",
+    "standard": "^11.0.1",
+    "stylelint": "^9.4.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.3.2"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  },
+  "babel": {
+    "presets": [
+      "next/babel"
+    ],
+    "plugins": [
+      [
+        "styled-components",
+        {
+          "ssr": true,
+          "displayName": true,
+          "preprocess": false
+        }
+      ]
+    ]
+  },
+  "stylelint": {
+    "processors": [
+      "stylelint-processor-styled-components"
+    ],
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-styled-components"
+    ],
+    "syntax": "scss"
+  }
+}
