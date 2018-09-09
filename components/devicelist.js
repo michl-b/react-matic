@@ -1,10 +1,7 @@
 import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { object, string, number } from 'yup'
+import { number, object, string } from 'yup'
 import xml2js from 'xml2js'
-import axios from 'axios'
-import styled from 'styled-components'
-import { size } from 'polished'
 
 const schema = object().shape({
   interval: number(),
@@ -25,11 +22,11 @@ export default class DeviceList extends Component {
 
   componentDidMount () {
     schema.validate(this.props)
-    .then(() => this.fetchInformation())
-    .catch((err) => {
-      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-      this.setState({ error: true, loading: false })
-    })
+      .then(() => this.fetchInformation())
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
   }
 
   componentWillUnmount () {
@@ -37,51 +34,57 @@ export default class DeviceList extends Component {
   }
 
   async fetchInformation () {
-    const { statusUrl } = this.props
+    const {statusUrl} = this.props
 
     try {
       var newValue = ''
-      const res = await fetch('http://homematic-raspi/addons/xmlapi/statelist.cgi')
+      const res = await fetch(
+        'http://homematic-raspi/addons/xmlapi/statelist.cgi')
       const message = await res.text()
       //newValue = message;
       const xml = xml2js.parseString(message, function (err, result) {
-        console.log('parse');
+        console.log('parse')
         for (var d = 0; d < result.stateList.device.length; d++) {
           //console.log('Device: ' + result.stateList.device[d].$.name);
           var device = result.stateList.device[d]
           for (var c = 0; c < device.channel.length; c++) {
             var channel = device.channel[c]
             //console.log(channel.datapoint);
-            if ( channel.datapoint !== undefined ) {
+            if (channel.datapoint !== undefined) {
               for (var dp = 0; dp < channel.datapoint.length; dp++) {
                 var datapoint = channel.datapoint[dp]
-                console.log(datapoint);
-                if ( datapoint.$.type === 'STATE') {
-                  console.log('SWITCH: ' + datapoint.$.name + ' - ' + datapoint.$.ise_id);
-                  newValue += 'SWITCH: ' + datapoint.$.name + ' - ' + datapoint.$.ise_id + '<br>';
+                console.log(datapoint)
+                if (datapoint.$.type === 'STATE') {
+                  console.log(
+                    'SWITCH: ' + datapoint.$.name + ' - ' + datapoint.$.ise_id)
+                  newValue += 'SWITCH: ' + datapoint.$.name + ' - '
+                    + datapoint.$.ise_id + '<br>'
                 }
-                if ( datapoint.$.type === 'LEVEL') {
-                  console.log('DIMMER: ' + datapoint.$.name + ' - ' + datapoint.$.ise_id);
-                  newValue += 'DIMMER: ' + datapoint.$.name + ' - ' + datapoint.$.ise_id + '<br>';
+                if (datapoint.$.type === 'LEVEL') {
+                  console.log(
+                    'DIMMER: ' + datapoint.$.name + ' - ' + datapoint.$.ise_id)
+                  newValue += 'DIMMER: ' + datapoint.$.name + ' - '
+                    + datapoint.$.ise_id + '<br>'
                 }
               }
             }
           }
         }
-      });
+      })
 
-      this.setState({ text: newValue, error: false, loading: false })
+      this.setState({text: newValue, error: false, loading: false})
     } catch (error) {
-      console.log(error);
-      this.setState({ error: true, loading: false })
+      console.log(error)
+      this.setState({error: true, loading: false})
     } finally {
-      this.timeout = setTimeout(() => this.fetchInformation(), this.props.interval)
+      this.timeout = setTimeout(() => this.fetchInformation(),
+        this.props.interval)
     }
   }
 
   render () {
-    const { error, loading, text } = this.state
-    const { title } = this.props
+    const {error, loading, text} = this.state
+    const {title} = this.props
     return (
       <div>
         <h2>{title}</h2>

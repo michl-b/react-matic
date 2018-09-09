@@ -2,23 +2,24 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { number, object, string } from 'yup'
 import Widget from '../widget'
+import xml2js from 'xml2js'
 import axios from 'axios'
-import ActionButtonSmall from '../action-button-small'
 import VerticalList from '../vertival-list'
 import Input from '../input'
+import ActionButtonSmall from '../action-button-small'
 
 const schema = object().shape({
   deviceId: number().required(),
-  actionUrl: string(),
   statusUrl: string(),
+  actionUrl: string(),
   interval: number(),
   title: string()
 })
 
-export default class OsramLightify extends Component {
+export default class WindowShade extends Component {
   static defaultProps = {
     interval: 1000 * 5,
-    title: 'Osram Lightify',
+    title: 'Window Shade',
     actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
     statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`
   }
@@ -34,18 +35,6 @@ export default class OsramLightify extends Component {
     this.state = {value: 0.000000}
   }
 
-  handleClick (value) {
-    var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
-    url = url.replace('{value}', value)
-    axios.get(url)
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
-      })
-
-    this.setState({value: value})
-  }
-
   handleChange (event) {
     var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
     url = url.replace('{value}', event.target.value)
@@ -56,6 +45,18 @@ export default class OsramLightify extends Component {
       })
 
     this.setState({value: event.target.value})
+  }
+
+  handleClick (value) {
+    var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+    url = url.replace('{value}', value)
+    axios.get(url)
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
+
+    this.setState({value: value})
   }
 
   componentDidMount () {
@@ -75,10 +76,16 @@ export default class OsramLightify extends Component {
     const {statusUrl, deviceId} = this.props
 
     try {
-      var url = statusUrl.replace('{deviceId}', deviceId)
-      await fetch(url)
+      let newValue = this.state.value
+      const url = statusUrl.replace('{deviceId}', deviceId)
+      const res = await fetch(url)
+      const message = await res.text()
 
-      this.setState({error: false, loading: false})
+      xml2js.parseString(message, function (err, result) {
+        newValue = result.state.datapoint[0].$.value
+      })
+
+      this.setState({value: newValue, error: false, loading: false})
     } catch (error) {
       console.log(error)
       this.setState({error: true, loading: false})
@@ -94,16 +101,13 @@ export default class OsramLightify extends Component {
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
         <Input placeholder='LEVEL' value={this.state.value} type='number'
-          min={0.000000} max={1.000000} step={0.250000}
+          min={0.000000} max={1.000000} step={0.250000} pattern='[0-9]{1,6}'
           onChange={this.handleChange.bind(this)} />
 
         <VerticalList>
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '0.0')}>0%</ActionButtonSmall>
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '0.5')}>50%</ActionButtonSmall>
-          <ActionButtonSmall onClick={this.handleClick.bind(this,
-            '1.0')}>100%</ActionButtonSmall>
+          <ActionButtonSmall onClick={this.handleClick.bind(this, '0.000000')}>Closed</ActionButtonSmall>
+          <ActionButtonSmall onClick={this.handleClick.bind(this, '0.750000')}>Middle</ActionButtonSmall>
+          <ActionButtonSmall onClick={this.handleClick.bind(this, '1.000000')}>Open</ActionButtonSmall>
         </VerticalList>
       </Widget>
     )

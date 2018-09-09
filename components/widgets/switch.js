@@ -5,6 +5,7 @@ import Widget from '../widget'
 import LightStatus from '../light-status'
 import xml2js from 'xml2js'
 import axios from 'axios'
+import { Lightbulb } from 'styled-icons/fa-regular/Lightbulb.cjs'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -42,26 +43,26 @@ export default class Switch extends Component {
       let newActive = this.state.active
       console.log(url)
       axios.get(url)
-      .then(response => {
-        const xml = xml2js.parseString(response.data, function (err, result) {
-          if (result.result.changed[0].$.new_value === 'true') {
-            newActive = true
-          } else {
-            newActive = false
-          }
+        .then(response => {
+          xml2js.parseString(response.data, function (err, result) {
+            if (result.result.changed[0].$.new_value === 'true') {
+              newActive = true
+            } else {
+              newActive = false
+            }
+          })
+          this.setState({active: newActive, error: false, loading: false})
         })
-        this.setState({active: newActive, error: false, loading: false})
-      })
     }
   }
 
   componentDidMount () {
     schema.validate(this.props)
-    .then(() => this.fetchInformation())
-    .catch((err) => {
-      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-      this.setState({error: true, loading: false})
-    })
+      .then(() => this.fetchInformation())
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
   }
 
   componentWillUnmount () {
@@ -73,17 +74,13 @@ export default class Switch extends Component {
 
     try {
       let newActive = this.state.active
-      var url = statusUrl.replace('{deviceId}', deviceId)
+      const url = statusUrl.replace('{deviceId}', deviceId)
 
       const res = await fetch(url)
       const message = await res.text()
 
-      const xml = xml2js.parseString(message, function (err, result) {
-        if (result.state.datapoint[0].$.value === 'true') {
-          newActive = true
-        } else {
-          newActive = false
-        }
+      xml2js.parseString(message, function (err, result) {
+        newActive = result.state.datapoint[0].$.value === 'true'
       })
 
       this.setState({active: newActive, error: false, loading: false})
@@ -102,6 +99,7 @@ export default class Switch extends Component {
     return (
       <Widget title={title} loading={loading} error={error}>
         <LightStatus active={active} onClick={this.handleClick.bind(this)}>
+          <Lightbulb size='36' />
           <div>{active ? 'ON' : 'OFF'}</div>
         </LightStatus>
       </Widget>

@@ -4,6 +4,8 @@ import { number, object, string } from 'yup'
 import Widget from '../widget'
 import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
+import { DoorClosed } from 'styled-icons/fa-solid/DoorClosed.cjs'
+import { DoorOpen } from 'styled-icons/fa-solid/DoorOpen.cjs'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -32,11 +34,11 @@ export default class Sensor extends Component {
 
   componentDidMount () {
     schema.validate(this.props)
-    .then(() => this.fetchInformation())
-    .catch((err) => {
-      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-      this.setState({error: true, loading: false})
-    })
+      .then(() => this.fetchInformation())
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
   }
 
   componentWillUnmount () {
@@ -51,12 +53,8 @@ export default class Sensor extends Component {
       const res = await fetch(`${statusUrl}${deviceId}`)
       const message = await res.text()
 
-      const xml = xml2js.parseString(message, function (err, result) {
-        if (result.state.datapoint[0].$.value === 'true') {
-          newActive = true
-        } else {
-          newActive = false
-        }
+      xml2js.parseString(message, function (err, result) {
+        newActive = result.state.datapoint[0].$.value === 'true'
       })
 
       this.setState({active: newActive, error: false, loading: false})
@@ -72,9 +70,13 @@ export default class Sensor extends Component {
   render () {
     const {error, loading, active} = this.state
     const {title} = this.props
+
+    const icon = this.state.active ? <DoorOpen size='36' /> : <DoorClosed size='36' />
+
     return (
       <Widget title={title} loading={loading} error={error}>
         <SensorStatus active={active}>
+          {icon}
           <div>{active ? 'Open' : 'Closed'}</div>
         </SensorStatus>
       </Widget>

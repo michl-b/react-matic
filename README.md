@@ -17,22 +17,22 @@
 ## Installation
 
 1. [Download](../../archive/master.zip) or clone the repository.
-2. Install the dependencies with `npm install`.
+2. Install the dependencies with `yarn`.
 
 ## Server
 
 ### Development
 
-Run `npm run dev` and go to http://localhost:3000.
+Run `yarn dev` and go to http://localhost:3000.
 
 ### Production
 
-Build your React-Matic for production with `npm run build` and then start the
-server with `npm start`.
+Build your React-Matic for production with `yarn build` and then start the
+server with `yarn start`.
 
 ### Docker
 
-1. Build your React-Matic for production with `npm run build`
+1. Build your React-Matic for production with `yarn build`
 2. Build the image with `docker build -t react-matic .`
 3. Start the container with `docker run -d -p 8080:3000 react-matic`
 4. Go to http://localhost:8080
@@ -51,6 +51,10 @@ import lightTheme from '../styles/light-theme'
 </Page>
 ```
 
+#### Preview
+
+![react-matic-light](./docs/light_theme.png)
+
 ### [dark](./styles/dark-theme.js)
 
 #### Example
@@ -62,6 +66,10 @@ import darkTheme from '../styles/dark-theme'
   ...
 </Page>
 ```
+
+#### Preview
+
+![react-matic-dark](./docs/dark_theme.png)
 
 ## License
 

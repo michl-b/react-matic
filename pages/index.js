@@ -1,8 +1,10 @@
 import Page from '../components/page'
 import Switch from '../components/widgets/switch'
 import Sensor from '../components/widgets/sensor'
+import MotionSensor from '../components/widgets/motionsensor'
 import Program from '../components/widgets/program'
 import OsramLightify from '../components/widgets/osram-lightify'
+import WindowShade from '../components/widgets/window-shade'
 import darkTheme from '../styles/dark-theme'
 
 export default () => (
@@ -10,36 +12,44 @@ export default () => (
     <Switch
       title='Esszimmerlicht'
       deviceId='2767'
-      readOnly='true'
+      // readOnly='true'
     />
     <Switch
       title='Stehlampe'
       deviceId='1279'
-      readOnly='true'
+      // readOnly='true'
     />
     <Switch
       title='Lichtschalter Garage außen'
       deviceId='1814'
-      readOnly='true'
+      // readOnly='true'
     />
     <Switch
       title='Außensteckdosen Haustüre'
       deviceId='3113'
-      readOnly='true'
+      // readOnly='true'
     />
     <Switch
       title='Zwischenstecker Schlafzimmer'
       deviceId='2007'
-      readOnly='true'
+      // readOnly='true'
+    />
+    <WindowShade
+      title='Rollo 3m'
+      deviceId='2802'
+    />
+    <OsramLightify
+      title='Lichtleiste TV'
+      deviceId='1341'
     />
     <Program
       title='Garage'
       statusUrl='http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id=1381'
       programId='1383'
     />
-    <OsramLightify
-      title='Lichtleiste TV'
-      deviceId='1341'
+    <MotionSensor
+      title='Bewegungsmelder'
+      deviceId='1451'
     />
     <Sensor
       title='Türkontakt Haustür'

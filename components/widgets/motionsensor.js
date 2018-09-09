@@ -2,43 +2,33 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { number, object, string } from 'yup'
 import Widget from '../widget'
-import DimmerStatus from '../dimmer-status'
+import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
-import axios from 'axios'
+import { Person } from 'styled-icons/octicons/Person.cjs'
 
 const schema = object().shape({
-  statusUrl: string().required(),
-  actionUrl: string().required(),
+  deviceId: number().required(),
+  statusUrl: string(),
   interval: number(),
   title: string()
 })
 
-export default class Dimmer extends Component {
+export default class MotionSensor extends Component {
   static defaultProps = {
     interval: 1000 * 5,
-    title: 'Dimmer'
+    title: 'Sensor',
+    statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id='
   }
 
   state = {
-    value: 0.000000,
+    active: false,
     error: false,
     loading: true
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
-  }
-
-  handleClick (value) {
-    axios.get(this.props.actionUrl + value)
-      .then(response => {
-        let newValue = value
-        xml2js.parseString(response.data, function (err, result) {
-          newValue = result.result.changed[0].$.new_value
-        })
-        this.setState({value: newValue, error: false, loading: false})
-      })
+    this.state = {active: false}
   }
 
   componentDidMount () {
@@ -55,18 +45,18 @@ export default class Dimmer extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl} = this.props
+    const {statusUrl, deviceId} = this.props
 
     try {
-      let newValue = this.state.value
-      const res = await fetch(`${statusUrl}`)
+      let newActive = this.state.active
+      const res = await fetch(`${statusUrl}${deviceId}`)
       const message = await res.text()
 
       xml2js.parseString(message, function (err, result) {
-        newValue = result.state.datapoint[0].$.value
+        newActive = result.state.datapoint[0].$.value === 'true'
       })
 
-      this.setState({value: newValue, error: false, loading: false})
+      this.setState({active: newActive, error: false, loading: false})
     } catch (error) {
       console.log(error)
       this.setState({error: true, loading: false})
@@ -77,17 +67,15 @@ export default class Dimmer extends Component {
   }
 
   render () {
-    const {error, loading, value} = this.state
+    const {error, loading, active} = this.state
     const {title} = this.props
+    const icon = this.state.active ? <Person size='36' /> : ''
     return (
       <Widget title={title} loading={loading} error={error}>
-        <DimmerStatus value={value}>
-          {value}
-          <button onClick={this.handleClick.bind(this, '0.000000')}>Off</button>
-          <button onClick={this.handleClick.bind(this, '0.500000')}>50%</button>
-          <button onClick={this.handleClick.bind(this, '1.000000')}>100%
-          </button>
-        </DimmerStatus>
+        <SensorStatus active={active}>
+          {icon}
+          <div>{active ? 'Motion' : 'Nothing'}</div>
+        </SensorStatus>
       </Widget>
     )
   }

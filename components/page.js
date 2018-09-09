@@ -17,6 +17,7 @@ const Container = styled.main`
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  align-content:flex-start;
   min-height: 100vh;
   padding: 0.5em;
 `
@@ -32,7 +33,7 @@ export default ({children, theme, title}) => (
         />
       </Head>
 
-      <NavbarDark/>
+      <NavbarDark />
 
       {children}
     </Container>

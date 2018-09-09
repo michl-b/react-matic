@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import { size } from 'polished'
 import LoadingIndicator from './loading-indicator'
 import ErrorIcon from './error-icon'
 
 const Container = styled.div`
-  ${size('9em')}
+  width: ${props => props.doubleWidth ? '20.2em' : '9em'};
+  height: ${props => props.doubleHeight ? '20.2em' : '9em'};
   align-items: center;
   background-color: ${props => props.theme.palette.canvasColor};
   border: 1px solid ${props => props.theme.palette.borderColor};
@@ -19,7 +19,7 @@ const Title = styled.h4`
   text-align: center;
 `
 
-export default ({ children, error = false, loading = false, title = '' }) => {
+export default ({children, error = false, loading = false, title = '', doubleWidth = false, doubleHeight = false}) => {
   let content
 
   if (loading) {
@@ -31,7 +31,7 @@ export default ({ children, error = false, loading = false, title = '' }) => {
   }
 
   return (
-    <Container>
+    <Container doubleWidth={doubleWidth} doubleHeight={doubleHeight}>
       {title ? <Title>{title}</Title> : ''}
       {content}
     </Container>
