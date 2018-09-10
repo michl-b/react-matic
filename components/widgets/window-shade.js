@@ -7,6 +7,7 @@ import axios from 'axios'
 import VerticalList from '../vertival-list'
 import Input from '../input'
 import ActionButtonSmall from '../action-button-small'
+import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -27,35 +28,38 @@ export default class WindowShade extends Component {
   state = {
     value: 0.000000,
     error: false,
-    loading: true
+    loading: true,
+    testMode: false
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
+    this.state = {value: 0.000000, testMode: myenv['testMode']}
   }
 
   handleChange (event) {
-    var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
-    url = url.replace('{value}', event.target.value)
-    axios.get(url)
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', event.target.value)
+      axios.get(url)
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
         this.setState({error: true, loading: false})
       })
-
+    }
     this.setState({value: event.target.value})
   }
 
   handleClick (value) {
-    var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
-    url = url.replace('{value}', value)
-    axios.get(url)
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', value)
+      axios.get(url)
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
         this.setState({error: true, loading: false})
       })
-
+    }
     this.setState({value: value})
   }
 
@@ -78,12 +82,16 @@ export default class WindowShade extends Component {
     try {
       let newValue = this.state.value
       const url = statusUrl.replace('{deviceId}', deviceId)
-      const res = await fetch(url)
-      const message = await res.text()
+      if (!this.state.testMode) {
+        const res = await fetch(url)
+        const message = await res.text()
 
-      xml2js.parseString(message, function (err, result) {
-        newValue = result.state.datapoint[0].$.value
-      })
+        xml2js.parseString(message, function (err, result) {
+          newValue = result.state.datapoint[0].$.value
+        })
+      } else {
+        newValue = 0.550000
+      }
 
       this.setState({value: newValue, error: false, loading: false})
     } catch (error) {

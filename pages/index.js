@@ -12,27 +12,22 @@ export default () => (
     <Switch
       title='Esszimmerlicht'
       deviceId='2767'
-      // readOnly='true'
     />
     <Switch
       title='Stehlampe'
       deviceId='1279'
-      // readOnly='true'
     />
     <Switch
       title='Lichtschalter Garage außen'
       deviceId='1814'
-      // readOnly='true'
     />
     <Switch
       title='Außensteckdosen Haustüre'
       deviceId='3113'
-      // readOnly='true'
     />
     <Switch
       title='Zwischenstecker Schlafzimmer'
       deviceId='2007'
-      // readOnly='true'
     />
     <WindowShade
       title='Rollo 3m'
@@ -44,7 +39,6 @@ export default () => (
     />
     <Program
       title='Garage'
-      statusUrl='http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id=1381'
       programId='1383'
     />
     <MotionSensor

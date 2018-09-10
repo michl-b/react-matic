@@ -5,6 +5,7 @@ import Widget from '../widget'
 import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import { Person } from 'styled-icons/octicons/Person.cjs'
+import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -16,19 +17,20 @@ const schema = object().shape({
 export default class MotionSensor extends Component {
   static defaultProps = {
     interval: 1000 * 5,
-    title: 'Sensor',
+    title: 'MotionSensor',
     statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id='
   }
 
   state = {
     active: false,
     error: false,
-    loading: true
+    loading: true,
+    testMode: false
   }
 
   constructor (props) {
     super(props)
-    this.state = {active: false}
+    this.state = {active: false, testMode: myenv['testMode']}
   }
 
   componentDidMount () {
@@ -49,12 +51,16 @@ export default class MotionSensor extends Component {
 
     try {
       let newActive = this.state.active
-      const res = await fetch(`${statusUrl}${deviceId}`)
-      const message = await res.text()
+      if (!this.state.testMode) {
+        const res = await fetch(`${statusUrl}${deviceId}`)
+        const message = await res.text()
 
-      xml2js.parseString(message, function (err, result) {
-        newActive = result.state.datapoint[0].$.value === 'true'
-      })
+        xml2js.parseString(message, function (err, result) {
+          newActive = result.state.datapoint[0].$.value === 'true'
+        })
+      } else {
+        newActive = !this.state.active
+      }
 
       this.setState({active: newActive, error: false, loading: false})
     } catch (error) {

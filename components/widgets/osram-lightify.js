@@ -6,6 +6,7 @@ import axios from 'axios'
 import ActionButtonSmall from '../action-button-small'
 import VerticalList from '../vertival-list'
 import Input from '../input'
+import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -26,45 +27,48 @@ export default class OsramLightify extends Component {
   state = {
     value: 0.000000,
     error: false,
-    loading: true
+    loading: true,
+    testMode: false
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
+    this.state = {value: 0.000000, testMode: myenv['testMode']}
   }
 
   handleClick (value) {
-    var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
-    url = url.replace('{value}', value)
-    axios.get(url)
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', value)
+      axios.get(url)
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
         this.setState({error: true, loading: false})
       })
-
+    }
     this.setState({value: value})
   }
 
   handleChange (event) {
-    var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
-    url = url.replace('{value}', event.target.value)
-    axios.get(url)
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', event.target.value)
+      axios.get(url)
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
         this.setState({error: true, loading: false})
       })
-
+    }
     this.setState({value: event.target.value})
   }
 
   componentDidMount () {
     schema.validate(this.props)
-      .then(() => this.fetchInformation())
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
-      })
+    .then(() => this.fetchInformation())
+    .catch((err) => {
+      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+      this.setState({error: true, loading: false})
+    })
   }
 
   componentWillUnmount () {
@@ -75,9 +79,10 @@ export default class OsramLightify extends Component {
     const {statusUrl, deviceId} = this.props
 
     try {
-      var url = statusUrl.replace('{deviceId}', deviceId)
-      await fetch(url)
-
+      if (!this.state.testMode) {
+        var url = statusUrl.replace('{deviceId}', deviceId)
+        await fetch(url)
+      }
       this.setState({error: false, loading: false})
     } catch (error) {
       console.log(error)
@@ -94,8 +99,8 @@ export default class OsramLightify extends Component {
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
         <Input placeholder='LEVEL' value={this.state.value} type='number'
-          min={0.000000} max={1.000000} step={0.250000}
-          onChange={this.handleChange.bind(this)} />
+               min={0.000000} max={1.000000} step={0.250000}
+               onChange={this.handleChange.bind(this)} />
 
         <VerticalList>
           <ActionButtonSmall

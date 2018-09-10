@@ -6,6 +6,7 @@ import LightStatus from '../light-status'
 import xml2js from 'xml2js'
 import axios from 'axios'
 import { Lightbulb } from 'styled-icons/fa-regular/Lightbulb.cjs'
+import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -28,21 +29,24 @@ export default class Switch extends Component {
   state = {
     active: false,
     error: false,
-    loading: true
+    loading: true,
+    testMode: false
   }
 
   constructor (props) {
     super(props)
-    this.state = {active: false}
+    this.state = {active: false, testMode: myenv['testMode']}
   }
 
   handleClick () {
-    if (this.props.readOnly === false) {
-      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
-      url = url.replace('{value}', !this.state.active)
-      let newActive = this.state.active
-      console.log(url)
-      axios.get(url)
+    if (!this.state.testMode) {
+      if (this.props.readOnly === false) {
+        var url = this.props.actionUrl.replace('{deviceId}',
+          this.props.deviceId)
+        url = url.replace('{value}', !this.state.active)
+        let newActive = this.state.active
+        console.log(url)
+        axios.get(url)
         .then(response => {
           xml2js.parseString(response.data, function (err, result) {
             if (result.result.changed[0].$.new_value === 'true') {
@@ -53,16 +57,17 @@ export default class Switch extends Component {
           })
           this.setState({active: newActive, error: false, loading: false})
         })
+      }
     }
   }
 
   componentDidMount () {
     schema.validate(this.props)
-      .then(() => this.fetchInformation())
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
-      })
+    .then(() => this.fetchInformation())
+    .catch((err) => {
+      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+      this.setState({error: true, loading: false})
+    })
   }
 
   componentWillUnmount () {
@@ -76,12 +81,16 @@ export default class Switch extends Component {
       let newActive = this.state.active
       const url = statusUrl.replace('{deviceId}', deviceId)
 
-      const res = await fetch(url)
-      const message = await res.text()
+      if (this.state.testMode) {
+        newActive = !this.state.active
+      } else {
+        const res = await fetch(url)
+        const message = await res.text()
 
-      xml2js.parseString(message, function (err, result) {
-        newActive = result.state.datapoint[0].$.value === 'true'
-      })
+        xml2js.parseString(message, function (err, result) {
+          newActive = result.state.datapoint[0].$.value === 'true'
+        })
+      }
 
       this.setState({active: newActive, error: false, loading: false})
     } catch (error) {
@@ -99,7 +108,7 @@ export default class Switch extends Component {
     return (
       <Widget title={title} loading={loading} error={error}>
         <LightStatus active={active} onClick={this.handleClick.bind(this)}>
-          <Lightbulb size='36' />
+          <Lightbulb size='36'/>
           <div>{active ? 'ON' : 'OFF'}</div>
         </LightStatus>
       </Widget>

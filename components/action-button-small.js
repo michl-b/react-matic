@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 
-export default styled.button`
+export default styled.div`
   background-color: ${props => props.theme.palette.primaryColor};
   color: ${props => props.theme.palette.white};
-  width: 6em;
+  width: 5em;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 `

@@ -6,6 +6,7 @@ export default styled.input`
   color: ${props => props.theme.palette.textColor};
   background: ${props => props.theme.palette.canvasColor};
   border: 1px solid ${props => props.theme.palette.borderColor};
-  border-radius: 3px;
+  border-radius: 10px;
   width: 100px;
+  display: inline-block;
 `

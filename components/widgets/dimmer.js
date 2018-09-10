@@ -3,12 +3,15 @@ import fetch from 'isomorphic-unfetch'
 import { number, object, string } from 'yup'
 import Widget from '../widget'
 import DimmerStatus from '../dimmer-status'
-import xml2js from 'xml2js'
 import axios from 'axios'
+import myenv from '../../myenv'
+import Input from '../input'
+import ActionButtonSmall from '../action-button-small'
 
 const schema = object().shape({
-  statusUrl: string().required(),
-  actionUrl: string().required(),
+  deviceId: number().required(),
+  statusUrl: string(),
+  actionUrl: string(),
   interval: number(),
   title: string()
 })
@@ -16,38 +19,56 @@ const schema = object().shape({
 export default class Dimmer extends Component {
   static defaultProps = {
     interval: 1000 * 5,
-    title: 'Dimmer'
+    title: 'Dimmer',
+    actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
+    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`
   }
 
   state = {
     value: 0.000000,
     error: false,
-    loading: true
+    loading: true,
+    testMode: false
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
+    this.state = {value: 0.000000, testMode: myenv['testMode']}
   }
 
   handleClick (value) {
-    axios.get(this.props.actionUrl + value)
-      .then(response => {
-        let newValue = value
-        xml2js.parseString(response.data, function (err, result) {
-          newValue = result.result.changed[0].$.new_value
-        })
-        this.setState({value: newValue, error: false, loading: false})
-      })
-  }
-
-  componentDidMount () {
-    schema.validate(this.props)
-      .then(() => this.fetchInformation())
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', value)
+      axios.get(url)
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
         this.setState({error: true, loading: false})
       })
+    }
+    this.setState({value: value})
+  }
+
+  handleChange (event) {
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', event.target.value)
+      axios.get(url)
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
+    }
+    this.setState({value: event.target.value})
+  }
+
+  componentDidMount () {
+    schema.validate(this.props)
+    .then(() => this.fetchInformation())
+    .catch((err) => {
+      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+      this.setState({error: true, loading: false})
+    })
   }
 
   componentWillUnmount () {
@@ -55,18 +76,16 @@ export default class Dimmer extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl} = this.props
+    const {statusUrl, deviceId} = this.props
 
     try {
-      let newValue = this.state.value
-      const res = await fetch(`${statusUrl}`)
-      const message = await res.text()
+      if (!this.state.testMode) {
+        var url = statusUrl.replace('{deviceId}', deviceId)
+        await fetch(url)
+      } else {
 
-      xml2js.parseString(message, function (err, result) {
-        newValue = result.state.datapoint[0].$.value
-      })
-
-      this.setState({value: newValue, error: false, loading: false})
+      }
+      this.setState({error: false, loading: false})
     } catch (error) {
       console.log(error)
       this.setState({error: true, loading: false})
@@ -77,16 +96,23 @@ export default class Dimmer extends Component {
   }
 
   render () {
-    const {error, loading, value} = this.state
+    const {error, loading} = this.state
     const {title} = this.props
     return (
       <Widget title={title} loading={loading} error={error}>
-        <DimmerStatus value={value}>
-          {value}
-          <button onClick={this.handleClick.bind(this, '0.000000')}>Off</button>
-          <button onClick={this.handleClick.bind(this, '0.500000')}>50%</button>
-          <button onClick={this.handleClick.bind(this, '1.000000')}>100%
-          </button>
+        <DimmerStatus value={this.state.value}>
+          <Input placeholder='LEVEL' value={this.state.value} type='number'
+                 min={0.000000} max={1.000000} step={0.250000}
+                 onChange={this.handleChange.bind(this)}/>
+
+          <ActionButtonSmall
+            onClick={this.handleClick.bind(this,
+              '0.0')}>0%</ActionButtonSmall>
+          <ActionButtonSmall
+            onClick={this.handleClick.bind(this,
+              '0.5')}>50%</ActionButtonSmall>
+          <ActionButtonSmall onClick={this.handleClick.bind(this,
+            '1.0')}>100%</ActionButtonSmall>
         </DimmerStatus>
       </Widget>
     )
