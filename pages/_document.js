@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <title>{name}</title>
+          <title>REACT-MATIC</title>
           <link rel='icon' href='/static/homematic.png' />
           {styleTags}
         </Head>
