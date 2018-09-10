@@ -8,5 +8,4 @@ export default styled.input`
   border: 1px solid ${props => props.theme.palette.borderColor};
   border-radius: 10px;
   width: 100px;
-  display: inline-block;
 `

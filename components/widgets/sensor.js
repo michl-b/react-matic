@@ -31,7 +31,7 @@ export default class Sensor extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {active: false, testMode: myenv['testMode']}
+    this.state = {active: false, testMode: myenv['testMode'] > 0}
   }
 
   componentDidMount () {

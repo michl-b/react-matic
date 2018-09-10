@@ -1,4 +1,5 @@
 import Page from '../components/page'
+import DateTime from '../components/widgets/datetime'
 import Switch from '../components/widgets/switch'
 import Sensor from '../components/widgets/sensor'
 import MotionSensor from '../components/widgets/motionsensor'
@@ -9,6 +10,8 @@ import darkTheme from '../styles/dark-theme'
 
 export default () => (
   <Page theme={darkTheme} title='Dashboard'>
+    <DateTime />
+
     <Switch
       title='Esszimmerlicht'
       deviceId='2767'

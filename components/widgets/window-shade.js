@@ -34,7 +34,7 @@ export default class WindowShade extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000, testMode: myenv['testMode']}
+    this.state = {value: 0.000000, testMode: myenv['testMode'] > 0}
   }
 
   handleChange (event) {

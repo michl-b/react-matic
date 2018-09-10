@@ -1,4 +1,5 @@
 import Page from '../components/page'
+import DateTime from '../components/widgets/datetime'
 import Switch from '../components/widgets/switch'
 import Sensor from '../components/widgets/sensor'
 import Dimmer from '../components/widgets/dimmer'
@@ -9,7 +10,9 @@ import WindowShade from '../components/widgets/window-shade'
 import darkTheme from '../styles/dark-theme'
 
 export default () => (
-  <Page theme={darkTheme} title='Test'>
+  <Page theme={darkTheme} title='Demo of Components'>
+    <DateTime />
+
     <Switch
       deviceId='2767'
     />

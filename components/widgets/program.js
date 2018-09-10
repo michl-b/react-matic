@@ -30,7 +30,7 @@ export default class Program extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {testMode: myenv['testMode']}
+    this.state = {testMode: myenv['testMode'] > 0}
   }
 
   componentDidMount () {
