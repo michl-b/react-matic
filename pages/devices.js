@@ -1,5 +1,5 @@
 import Page from '../components/page'
-import DeviceList from '../components/devicelist'
+import DeviceList from '../components/widgets/devicelist'
 import darkTheme from '../styles/dark-theme'
 
 export default () => (

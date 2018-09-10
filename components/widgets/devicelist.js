@@ -2,6 +2,7 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { number, object, string } from 'yup'
 import xml2js from 'xml2js'
+import myenv from '../../myenv'
 
 const schema = object().shape({
   interval: number(),
@@ -17,7 +18,13 @@ export default class DeviceList extends Component {
   state = {
     text: 'Empty',
     error: false,
-    loading: true
+    loading: true,
+    testMode: false
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {testMode: myenv['testMode'] > 0}
   }
 
   componentDidMount () {
@@ -34,15 +41,15 @@ export default class DeviceList extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl} = this.props
-
     try {
       var newValue = ''
-      const res = await fetch(
-        'http://homematic-raspi/addons/xmlapi/statelist.cgi')
-      const message = await res.text()
-      //newValue = message;
-      const xml = xml2js.parseString(message, function (err, result) {
+      let message = ''
+      if (!this.state.testMode) {
+        const res = await fetch(
+          'http://homematic-raspi/addons/xmlapi/statelist.cgi')
+        message = await res.text()
+      }
+      xml2js.parseString(message, function (err, result) {
         console.log('parse')
         for (var d = 0; d < result.stateList.device.length; d++) {
           //console.log('Device: ' + result.stateList.device[d].$.name);
@@ -83,7 +90,7 @@ export default class DeviceList extends Component {
   }
 
   render () {
-    const {error, loading, text} = this.state
+    const {text} = this.state
     const {title} = this.props
     return (
       <div>

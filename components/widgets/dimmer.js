@@ -18,7 +18,7 @@ const schema = object().shape({
 
 export default class Dimmer extends Component {
   static defaultProps = {
-    interval: 1000 * 5,
+    interval: 1000 * 5,  // five seconds
     title: 'Dimmer',
     actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
     statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`

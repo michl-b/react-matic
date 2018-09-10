@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Widget from '../widget'
 
 const TimeItem = styled.div`
-  font-size: 4em;
+  font-size: 3em;
   text-align: center;
 `
 
@@ -15,7 +15,7 @@ const DateItem = styled.div`
 
 export default class DateTime extends Component {
   static defaultProps = {
-    interval: 1000 * 10
+    interval: 1000 * 2 // two seconds
   }
 
   state = {
@@ -23,12 +23,17 @@ export default class DateTime extends Component {
   }
 
   componentDidMount () {
-    const { interval } = this.props
-    this.timeout = setTimeout(() => this.setState({ date: new Date() }), interval)
+    this.fetchInformation()
   }
 
   componentWillUnmount () {
     clearTimeout(this.timeout)
+  }
+
+  async fetchInformation () {
+    this.setState({ date: new Date() })
+    this.timeout = setTimeout(() => this.fetchInformation(),
+      this.props.interval)
   }
 
   render () {
