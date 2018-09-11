@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { number, object, string } from 'yup'
+import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import xml2js from 'xml2js'
 import axios from 'axios'
@@ -14,7 +14,8 @@ const schema = object().shape({
   statusUrl: string(),
   actionUrl: string(),
   interval: number(),
-  title: string()
+  title: string(),
+  testMode: boolean()
 })
 
 export default class WindowShade extends Component {
@@ -22,23 +23,23 @@ export default class WindowShade extends Component {
     interval: 1000 * 5,
     title: 'Window Shade',
     actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
-    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`
+    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`,
+    testMode: false
   }
 
   state = {
     value: 0.000000,
     error: false,
-    loading: true,
-    testMode: false
+    loading: true
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000, testMode: myenv['testMode'] > 0}
+    this.state = {value: 0.000000}
   }
 
   handleChange (event) {
-    if (!this.state.testMode) {
+    if (!this.props.testMode) {
       var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
       url = url.replace('{value}', event.target.value)
       axios.get(url)
@@ -51,7 +52,7 @@ export default class WindowShade extends Component {
   }
 
   handleClick (value) {
-    if (!this.state.testMode) {
+    if (!this.props.testMode) {
       var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
       url = url.replace('{value}', value)
       axios.get(url)
@@ -82,7 +83,7 @@ export default class WindowShade extends Component {
     try {
       let newValue = this.state.value
       const url = statusUrl.replace('{deviceId}', deviceId)
-      if (!this.state.testMode) {
+      if (!this.props.testMode) {
         const res = await fetch(url)
         const message = await res.text()
 

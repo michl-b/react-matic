@@ -16,32 +16,41 @@ export default () => (
 
     <Switch
       deviceId='2767'
+      testMode={true}
     />
 
     <OsramLightify
       deviceId='1341'
+      testMode={true}
     />
 
     <WindowShade
       deviceId='2802'
+      testMode={true}
     />
 
     <Program
       programId='1383'
+      testMode={true}
     />
 
     <Sensor
       deviceId='1715'
+      testMode={true}
     />
 
     <MotionSensor
       deviceId='1451'
+      testMode={true}
     />
 
     <Dimmer
       deviceId='1451'
+      testMode={true}
     />
 
-    <Webcam />
+    <Webcam
+      testMode={true}
+    />
   </Page>
 )

@@ -14,7 +14,8 @@ const schema = object().shape({
   actionUrl: string(),
   interval: number(),
   readOnly: boolean(),
-  title: string()
+  title: string(),
+  testMode: boolean()
 })
 
 export default class Switch extends Component {
@@ -23,23 +24,23 @@ export default class Switch extends Component {
     title: 'Switch',
     readOnly: false,
     statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}',
-    actionUrl: 'http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}'
+    actionUrl: 'http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}',
+    testMode: false
   }
 
   state = {
     active: false,
     error: false,
-    loading: true,
-    testMode: false
+    loading: true
   }
 
   constructor (props) {
     super(props)
-    this.state = {active: false, testMode: myenv['testMode'] > 0}
+    this.state = {active: false}
   }
 
   handleClick () {
-    if (!this.state.testMode) {
+    if (!this.props.testMode) {
       if (this.props.readOnly === false) {
         var url = this.props.actionUrl.replace('{deviceId}',
           this.props.deviceId)
@@ -63,11 +64,11 @@ export default class Switch extends Component {
 
   componentDidMount () {
     schema.validate(this.props)
-    .then(() => this.fetchInformation())
-    .catch((err) => {
-      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-      this.setState({error: true, loading: false})
-    })
+      .then(() => this.fetchInformation())
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
   }
 
   componentWillUnmount () {
@@ -81,7 +82,7 @@ export default class Switch extends Component {
       let newActive = this.state.active
       const url = statusUrl.replace('{deviceId}', deviceId)
 
-      if (this.state.testMode) {
+      if (this.props.testMode) {
         newActive = !this.state.active
       } else {
         const res = await fetch(url)

@@ -1,30 +1,33 @@
 import { Component } from 'react'
-import { number, object, string } from 'yup'
+import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import myenv from '../../myenv'
+import LoadingIndicator from '../loading-indicator'
+import ErrorIcon from '../error-icon'
 
 const schema = object().shape({
   imageUrl: string(),
   interval: number(),
-  title: string()
+  title: string(),
+  testMode: boolean()
 })
 
 export default class Webcam extends Component {
   static defaultProps = {
     interval: 1000 * 5 * 60, // five Minutes
     title: 'Webcam',
-    imageUrl: `/api/webcam/image`
+    imageUrl: `/api/webcam/image`,
+    testMode: false
   }
 
   state = {
     error: false,
-    loading: true,
-    testMode: false
+    loading: true
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000, testMode: myenv['testMode'] > 0}
+    this.state = {value: 0.000000}
   }
 
   componentDidMount () {
@@ -48,10 +51,19 @@ export default class Webcam extends Component {
   render () {
     const {error, loading} = this.state
     const {title, imageUrl} = this.props
+
+    var url
+
+    if (this.props.testMode) {
+      url = '/static/demo.jpg'
+    } else {
+      url = imageUrl
+    }
+
     return (
       <Widget doubleWidth doubleHeight title={title} loading={loading} error={error}>
-        <a href={imageUrl} target='_blank'>
-          <img src={imageUrl} width='320' height='180' />
+        <a href={url} target='_blank'>
+          <img src={url} width='320' />
         </a>
       </Widget>
     )

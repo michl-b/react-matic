@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { number, object, string } from 'yup'
+import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
@@ -12,26 +12,27 @@ const schema = object().shape({
   deviceId: number().required(),
   statusUrl: string(),
   interval: number(),
-  title: string()
+  title: string(),
+  testMode: boolean()
 })
 
 export default class Sensor extends Component {
   static defaultProps = {
     interval: 1000 * 5,
     title: 'Sensor',
-    statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id='
+    statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id=',
+    testMode: false
   }
 
   state = {
     active: false,
     error: false,
-    loading: true,
-    testMode: false
+    loading: true
   }
 
   constructor (props) {
     super(props)
-    this.state = {active: false, testMode: myenv['testMode'] > 0}
+    this.state = {active: false}
   }
 
   componentDidMount () {
@@ -52,7 +53,7 @@ export default class Sensor extends Component {
 
     try {
       let newActive = this.state.active
-      if (!this.state.testMode) {
+      if (!this.props.testMode) {
         const res = await fetch(`${statusUrl}${deviceId}`)
         const message = await res.text()
 

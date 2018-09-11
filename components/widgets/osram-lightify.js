@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
-import { number, object, string } from 'yup'
+import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import axios from 'axios'
 import ActionButtonSmall from '../action-button-small'
@@ -13,7 +13,8 @@ const schema = object().shape({
   actionUrl: string(),
   statusUrl: string(),
   interval: number(),
-  title: string()
+  title: string(),
+  testMode: boolean()
 })
 
 export default class OsramLightify extends Component {
@@ -21,23 +22,23 @@ export default class OsramLightify extends Component {
     interval: 1000 * 5,
     title: 'Osram Lightify',
     actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
-    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`
+    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`,
+    testMode: false
   }
 
   state = {
     value: 0.000000,
     error: false,
-    loading: true,
-    testMode: false
+    loading: true
   }
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000, testMode: myenv['testMode'] > 0}
+    this.state = {value: 0.000000}
   }
 
   handleClick (value) {
-    if (!this.state.testMode) {
+    if (!this.props.testMode) {
       var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
       url = url.replace('{value}', value)
       axios.get(url)
@@ -50,7 +51,7 @@ export default class OsramLightify extends Component {
   }
 
   handleChange (event) {
-    if (!this.state.testMode) {
+    if (!this.props.testMode) {
       var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
       url = url.replace('{value}', event.target.value)
       axios.get(url)
@@ -79,7 +80,7 @@ export default class OsramLightify extends Component {
     const {statusUrl, deviceId} = this.props
 
     try {
-      if (!this.state.testMode) {
+      if (!this.props.testMode) {
         var url = statusUrl.replace('{deviceId}', deviceId)
         await fetch(url)
       }
@@ -99,8 +100,8 @@ export default class OsramLightify extends Component {
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
         <Input placeholder='LEVEL' value={this.state.value} type='number'
-               min={0.000000} max={1.000000} step={0.250000}
-               onChange={this.handleChange.bind(this)} />
+          min={0.000000} max={1.000000} step={0.250000}
+          onChange={this.handleChange.bind(this)} />
 
         <VerticalList>
           <ActionButtonSmall
