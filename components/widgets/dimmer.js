@@ -2,11 +2,9 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { number, object, string } from 'yup'
 import Widget from '../widget'
-import DimmerStatus from '../dimmer-status'
 import axios from 'axios'
 import myenv from '../../myenv'
-import Input from '../input'
-import ActionButtonSmall from '../action-button-small'
+import Slider from 'react-rangeslider'
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -41,10 +39,10 @@ export default class Dimmer extends Component {
       var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
       url = url.replace('{value}', value)
       axios.get(url)
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
-      })
+        .catch((err) => {
+          console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+          this.setState({error: true, loading: false})
+        })
     }
     this.setState({value: value})
   }
@@ -54,21 +52,21 @@ export default class Dimmer extends Component {
       var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
       url = url.replace('{value}', event.target.value)
       axios.get(url)
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
-      })
+        .catch((err) => {
+          console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+          this.setState({error: true, loading: false})
+        })
     }
     this.setState({value: event.target.value})
   }
 
   componentDidMount () {
     schema.validate(this.props)
-    .then(() => this.fetchInformation())
-    .catch((err) => {
-      console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-      this.setState({error: true, loading: false})
-    })
+      .then(() => this.fetchInformation())
+      .catch((err) => {
+        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+        this.setState({error: true, loading: false})
+      })
   }
 
   componentWillUnmount () {
@@ -82,8 +80,6 @@ export default class Dimmer extends Component {
       if (!this.state.testMode) {
         var url = statusUrl.replace('{deviceId}', deviceId)
         await fetch(url)
-      } else {
-
       }
       this.setState({error: false, loading: false})
     } catch (error) {
@@ -95,25 +91,46 @@ export default class Dimmer extends Component {
     }
   }
 
+  handleChangeSlider = value => {
+    this.setState({
+      value: value
+    })
+    console.log(value)
+  };
+
+  handleChangeSliderComplete = () => {
+    if (!this.state.testMode) {
+      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      url = url.replace('{value}', this.state.value)
+      axios.get(url)
+        .catch((err) => {
+          console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+          this.setState({error: true, loading: false})
+        })
+    }
+  };
+
   render () {
     const {error, loading} = this.state
     const {title} = this.props
+
+    const horizontalLabels = {0: 'Off', 0.5: '50%', 1: '100%'}
+    const style = {width: '8em'}
+
     return (
       <Widget title={title} loading={loading} error={error}>
-        <DimmerStatus value={this.state.value}>
-          <Input placeholder='LEVEL' value={this.state.value} type='number'
-                 min={0.000000} max={1.000000} step={0.250000}
-                 onChange={this.handleChange.bind(this)}/>
-
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this,
-              '0.0')}>0%</ActionButtonSmall>
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this,
-              '0.5')}>50%</ActionButtonSmall>
-          <ActionButtonSmall onClick={this.handleClick.bind(this,
-            '1.0')}>100%</ActionButtonSmall>
-        </DimmerStatus>
+        <div style={style}>
+          <Slider
+            min={0}
+            max={1}
+            step={0.25}
+            value={this.state.value}
+            tooltip={false}
+            onChange={this.handleChangeSlider.bind(this)}
+            onChangeComplete={this.handleChangeSliderComplete.bind(this)}
+            labels={horizontalLabels}
+          />
+        </div>
       </Widget>
     )
   }

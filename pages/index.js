@@ -6,6 +6,7 @@ import MotionSensor from '../components/widgets/motionsensor'
 import Program from '../components/widgets/program'
 import OsramLightify from '../components/widgets/osram-lightify'
 import WindowShade from '../components/widgets/window-shade'
+import Webcam from '../components/widgets/webcam'
 import darkTheme from '../styles/dark-theme'
 
 export default () => (
@@ -76,5 +77,6 @@ export default () => (
       title='Terrassentür links'
       deviceId='2859'
     />
+    <Webcam />
   </Page>
 )

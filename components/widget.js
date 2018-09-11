@@ -10,10 +10,11 @@ const Container = styled.div`
   border: 1px solid ${props => props.theme.palette.borderColor};
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content:flex-start;
   margin: 0.5em;
   padding: 0.5em;
   text-align: center;
+  align-content:flex-start;
 `
 
 const Title = styled.h4`

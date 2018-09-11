@@ -13,6 +13,8 @@ export default class MyDocument extends Document {
         <Head>
           <title>REACT-MATIC</title>
           <link rel='icon' href='/static/homematic.png' />
+          <link rel="stylesheet" href="https://unpkg.com/react-rangeslider/umd/rangeslider.min.css" />
+
           {styleTags}
         </Head>
         <body>
