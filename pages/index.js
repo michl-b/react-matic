@@ -77,6 +77,5 @@ export default () => (
       title='Terrassentür links'
       deviceId='2859'
     />
-    <Webcam />
   </Page>
 )

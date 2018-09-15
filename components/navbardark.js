@@ -39,6 +39,7 @@ export default class NavbarDark extends React.Component {
           </Nav>
           <Nav start collapse expandSm hidden={hidden}>
             <NavbarLink dark href='/'>Dashboard</NavbarLink>
+            <NavbarLink dark href='/webcams'>Webcams</NavbarLink>
             <NavbarLink dark href='/demo'>Demo</NavbarLink>
           </Nav>
         </Navbar>
