@@ -109,13 +109,11 @@ export default class WindowShade extends Component {
     const {title} = this.props
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
-        <Input placeholder='LEVEL' value={this.state.value} type='number'
-          min={0.000000} max={1.000000} step={0.250000} pattern='[0-9]{1,6}'
-          onChange={this.handleChange.bind(this)} />
+        <label>{this.state.value}</label>
 
         <VerticalList>
           <ActionButtonSmall onClick={this.handleClick.bind(this, '0.000000')}>Closed</ActionButtonSmall>
-          <ActionButtonSmall onClick={this.handleClick.bind(this, '0.750000')}>Middle</ActionButtonSmall>
+          <ActionButtonSmall onClick={this.handleClick.bind(this, '0.700000')}>Middle</ActionButtonSmall>
           <ActionButtonSmall onClick={this.handleClick.bind(this, '1.000000')}>Open</ActionButtonSmall>
         </VerticalList>
       </Widget>

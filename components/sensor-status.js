@@ -11,4 +11,6 @@ export default styled.span`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 `

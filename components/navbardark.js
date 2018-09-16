@@ -19,7 +19,7 @@ export default class NavbarDark extends React.Component {
   }
 
   render () {
-    const {hidden} = this.state
+    const { hidden } = this.state
     return (
       <Container fluid>
         <Navbar expandSm dark>

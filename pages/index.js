@@ -6,12 +6,20 @@ import MotionSensor from '../components/widgets/motionsensor'
 import Program from '../components/widgets/program'
 import OsramLightify from '../components/widgets/osram-lightify'
 import WindowShade from '../components/widgets/window-shade'
-import Webcam from '../components/widgets/webcam'
+import AlertSystem from '../components/widgets/alert-system'
 import darkTheme from '../styles/dark-theme'
 
 export default () => (
   <Page theme={darkTheme} title='Dashboard'>
     <DateTime />
+
+    <AlertSystem
+      title='Alarmsystem'
+      alertVariableId='1235'
+      alertSystemVariableId='1549'
+      activateSystemProgramId='1550'
+      deactivateSystemProgramId='1918'
+    />
 
     <Switch
       title='Esszimmerlicht'
@@ -36,10 +44,6 @@ export default () => (
     <WindowShade
       title='Rollo 3m'
       deviceId='2802'
-    />
-    <OsramLightify
-      title='Lichtleiste TV'
-      deviceId='1341'
     />
     <Program
       title='Garage'
@@ -76,6 +80,12 @@ export default () => (
     <Sensor
       title='Terrassentür links'
       deviceId='2859'
+    />
+    <OsramLightify
+      title='Lichtleiste TV'
+      levelDeviceId='1341'
+      colorDeviceId='1342'
+      temperatureDeviceId='1343'
     />
   </Page>
 )
