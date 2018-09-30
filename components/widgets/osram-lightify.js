@@ -70,7 +70,7 @@ export default class OsramLightify extends Component {
 
     try {
       if (!this.props.testMode) {
-        axios.get('http://localhost:3000/api/osram/nodeStatus?mac=' + mac)
+        axios.get('/api/osram/nodeStatus?mac=' + mac)
           .then(axiosRes => {
             var rgb = axiosRes.data.blue | (axiosRes.data.green << 8) | (axiosRes.data.red << 16)
             var hexColor = '#' + (0x1000000 + rgb).toString(16).slice(1)
@@ -108,7 +108,7 @@ export default class OsramLightify extends Component {
 
   handleChangeBrightnessSliderComplete = () => {
     if (!this.props.testMode) {
-      var url = 'http://localhost:3000/api/osram/nodeBrightness?mac=' + this.props.mac + '&brightness=' + this.state.brightness
+      var url = '/api/osram/nodeBrightness?mac=' + this.props.mac + '&brightness=' + this.state.brightness
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -126,7 +126,7 @@ export default class OsramLightify extends Component {
 
   handleChangeTemperatureSliderComplete = () => {
     if (!this.props.testMode) {
-      var url = 'http://localhost:3000/api/osram/nodeTemperature?mac=' + this.props.mac + '&temperature=' + this.state.temperature
+      var url = '/api/osram/nodeTemperature?mac=' + this.props.mac + '&temperature=' + this.state.temperature
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -138,7 +138,7 @@ export default class OsramLightify extends Component {
 
   setColor = () => {
     if (!this.props.testMode) {
-      var url = 'http://localhost:3000/api/osram/nodeColor?mac=' + this.props.mac + '&red=' + this.state.red + '&green=' + this.state.green + '&blue=' + this.state.blue
+      var url = '/api/osram/nodeColor?mac=' + this.props.mac + '&red=' + this.state.red + '&green=' + this.state.green + '&blue=' + this.state.blue
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -156,7 +156,7 @@ export default class OsramLightify extends Component {
   handleOnOff = () => {
     if (!this.props.testMode) {
       const newStatus = this.state.status === 1 ? 0 : 1
-      var url = 'http://localhost:3000/api/osram/nodeOnOff?mac=' + this.props.mac + '&on=' + newStatus
+      var url = '/api/osram/nodeOnOff?mac=' + this.props.mac + '&on=' + newStatus
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
