@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
+import myEnv from '../../myenv'
 
 const schema = object().shape({
   imageUrl: string(),
@@ -46,15 +47,15 @@ export default class Webcam extends Component {
   }
 
   render () {
-    const {error, loading} = this.state
-    const {title, imageUrl} = this.props
+    const { error, loading } = this.state
+    const { title, imageUrl } = this.props
 
     var url
 
     if (this.props.testMode) {
       url = '/static/demo.jpg'
     } else {
-      url = imageUrl
+      url = myEnv.app.baseUrl + imageUrl
     }
 
     return (

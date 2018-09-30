@@ -5,6 +5,7 @@ import axios from 'axios'
 import Slider from 'react-rangeslider'
 import { CirclePicker } from 'react-color'
 import styled from 'styled-components'
+import myEnv from '../../myenv'
 
 const Status = styled.button`
   background-color: ${props => props.active ? props.theme.palette.lightOnColor : props.theme.palette.disabledColor};
@@ -70,7 +71,7 @@ export default class OsramLightify extends Component {
 
     try {
       if (!this.props.testMode) {
-        axios.get('/api/osram/nodeStatus?mac=' + mac)
+        axios.get(myEnv.app.baseUrl + '/api/osram/nodeStatus?mac=' + mac)
           .then(axiosRes => {
             var rgb = axiosRes.data.blue | (axiosRes.data.green << 8) | (axiosRes.data.red << 16)
             var hexColor = '#' + (0x1000000 + rgb).toString(16).slice(1)
@@ -108,7 +109,7 @@ export default class OsramLightify extends Component {
 
   handleChangeBrightnessSliderComplete = () => {
     if (!this.props.testMode) {
-      var url = '/api/osram/nodeBrightness?mac=' + this.props.mac + '&brightness=' + this.state.brightness
+      var url = myEnv.app.baseUrl + '/api/osram/nodeBrightness?mac=' + this.props.mac + '&brightness=' + this.state.brightness
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -126,7 +127,7 @@ export default class OsramLightify extends Component {
 
   handleChangeTemperatureSliderComplete = () => {
     if (!this.props.testMode) {
-      var url = '/api/osram/nodeTemperature?mac=' + this.props.mac + '&temperature=' + this.state.temperature
+      var url = myEnv.app.baseUrl + '/api/osram/nodeTemperature?mac=' + this.props.mac + '&temperature=' + this.state.temperature
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -138,7 +139,7 @@ export default class OsramLightify extends Component {
 
   setColor = () => {
     if (!this.props.testMode) {
-      var url = '/api/osram/nodeColor?mac=' + this.props.mac + '&red=' + this.state.red + '&green=' + this.state.green + '&blue=' + this.state.blue
+      var url = myEnv.app.baseUrl + '/api/osram/nodeColor?mac=' + this.props.mac + '&red=' + this.state.red + '&green=' + this.state.green + '&blue=' + this.state.blue
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -156,7 +157,7 @@ export default class OsramLightify extends Component {
   handleOnOff = () => {
     if (!this.props.testMode) {
       const newStatus = this.state.status === 1 ? 0 : 1
-      var url = '/api/osram/nodeOnOff?mac=' + this.props.mac + '&on=' + newStatus
+      var url = myEnv.app.baseUrl + '/api/osram/nodeOnOff?mac=' + this.props.mac + '&on=' + newStatus
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
