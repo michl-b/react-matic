@@ -11,81 +11,30 @@ import darkTheme from '../styles/dark-theme'
 
 export default () => (
   <Page theme={darkTheme} title='Dashboard'>
-    <DateTime />
-
+    <DateTime/>
     <AlertSystem
       title='Alarmsystem'
       alertVariableId='1235'
       alertSystemVariableId='1549'
       activateSystemProgramId='1550'
-      deactivateSystemProgramId='1918'
-    />
-
-    <Switch
-      title='Esszimmerlicht'
-      deviceId='2767'
-    />
-    <Switch
-      title='Stehlampe'
-      deviceId='1279'
-    />
-    <Switch
-      title='Lichtschalter Garage außen'
-      deviceId='1814'
-    />
-    <Switch
-      title='Außensteckdosen Haustüre'
-      deviceId='3113'
-    />
-    <Switch
-      title='Zwischenstecker Schlafzimmer'
-      deviceId='2007'
-    />
-    <WindowShade
-      title='Rollo 3m'
-      deviceId='2802'
-    />
-    <Program
-      title='Garage'
-      programId='1383'
-    />
-    <MotionSensor
-      title='Bewegungsmelder'
-      deviceId='1451'
-    />
-    <Sensor
-      title='Türkontakt Haustür'
-      deviceId='1715'
-    />
-    <Sensor
-      title='Türkontakt Nebeneingangstür'
-      deviceId='1773'
-    />
-    <Sensor
-      title='Türkontakt Holzschuppen'
-      deviceId='1609'
-    />
-    <Sensor
-      title='Türkontakt Geräteschuppen'
-      deviceId='1656'
-    />
-    <Sensor
-      title='Torkontakt Garagentor'
-      deviceId='1870'
-    />
-    <Sensor
-      title='Terrassentür rechts'
-      deviceId='2914'
-    />
-    <Sensor
-      title='Terrassentür links'
-      deviceId='2859'
-    />
+      deactivateSystemProgramId='1918'/>
+    <Switch title='Esszimmerlicht' deviceId='2767'/>
+    <Switch title='Stehlampe' deviceId='1279'/>
+    <Switch title='Lichtschalter Garage außen' deviceId='1814'/>
+    <Switch title='Außensteckdosen Haustüre' deviceId='3113'/>
+    <Switch title='Zwischenstecker Schlafzimmer' deviceId='2007'/>
+    <WindowShade title='Rollo 3m' deviceId='2802'/>
+    <Program title='Garage' programId='1383'/>
+    <MotionSensor title='Bewegungsmelder' deviceId='1451'/>
+    <Sensor title='Türkontakt Haustür' deviceId='1715'/>
+    <Sensor title='Türkontakt Nebeneingangstür' deviceId='1773'/>
+    <Sensor title='Türkontakt Holzschuppen' deviceId='1609'/>
+    <Sensor title='Türkontakt Geräteschuppen' deviceId='1656'/>
+    <Sensor title='Torkontakt Garagentor' deviceId='1870'/>
+    <Sensor title='Terrassentür rechts' deviceId='2914'/>
+    <Sensor title='Terrassentür links' deviceId='2859'/>
     <OsramLightify
       title='Lichtleiste TV'
-      levelDeviceId='1341'
-      colorDeviceId='1342'
-      temperatureDeviceId='1343'
-    />
+      mac='e1ffa200aa3eb07c'/>
   </Page>
 )

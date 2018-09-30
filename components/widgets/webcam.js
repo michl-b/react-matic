@@ -1,9 +1,6 @@
 import { Component } from 'react'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
-import myenv from '../../myenv'
-import LoadingIndicator from '../loading-indicator'
-import ErrorIcon from '../error-icon'
 
 const schema = object().shape({
   imageUrl: string(),
@@ -27,7 +24,7 @@ export default class Webcam extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
+    this.state = { value: 0.000000 }
   }
 
   componentDidMount () {
@@ -35,7 +32,7 @@ export default class Webcam extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 

@@ -3,7 +3,6 @@ import fetch from 'isomorphic-unfetch'
 import { number, object, string, boolean } from 'yup'
 import Widget from '../widget'
 import axios from 'axios'
-import myenv from '../../myenv'
 import Slider from 'react-rangeslider'
 
 const schema = object().shape({
@@ -17,7 +16,7 @@ const schema = object().shape({
 
 export default class Dimmer extends Component {
   static defaultProps = {
-    interval: 1000 * 5,  // five seconds
+    interval: 1000 * 5, // five seconds
     title: 'Dimmer',
     actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
     statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`,
@@ -32,7 +31,7 @@ export default class Dimmer extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
+    this.state = { value: 0.000000 }
   }
 
   handleClick (value) {
@@ -42,10 +41,10 @@ export default class Dimmer extends Component {
       axios.get(url)
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({error: true, loading: false})
+          this.setState({ error: true, loading: false })
         })
     }
-    this.setState({value: value})
+    this.setState({ value: value })
   }
 
   handleChange (event) {
@@ -55,7 +54,7 @@ export default class Dimmer extends Component {
       axios.get(url)
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({error: true, loading: false})
+          this.setState({ error: true, loading: false })
         })
     }
     this.setState({value: event.target.value})
@@ -66,7 +65,7 @@ export default class Dimmer extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 
@@ -82,10 +81,10 @@ export default class Dimmer extends Component {
         var url = statusUrl.replace('{deviceId}', deviceId)
         await fetch(url)
       }
-      this.setState({error: false, loading: false})
+      this.setState({ error: false, loading: false })
     } catch (error) {
       console.log(error)
-      this.setState({error: true, loading: false})
+      this.setState({ error: true, loading: false })
     } finally {
       this.timeout = setTimeout(() => this.fetchInformation(),
         this.props.interval)
@@ -106,17 +105,17 @@ export default class Dimmer extends Component {
       axios.get(url)
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({error: true, loading: false})
+          this.setState({ error: true, loading: false })
         })
     }
   };
 
   render () {
-    const {error, loading} = this.state
-    const {title} = this.props
+    const { error, loading } = this.state
+    const { title } = this.props
 
-    const horizontalLabels = {0: 'Off', 0.5: '50%', 1: '100%'}
-    const style = {width: '8em'}
+    const horizontalLabels = { 0: 'Off', 0.5: '50%', 1: '100%' }
+    const style = { width: '8em' }
 
     return (
       <Widget title={title} loading={loading} error={error}>

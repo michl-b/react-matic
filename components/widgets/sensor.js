@@ -6,7 +6,6 @@ import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import { DoorClosed } from 'styled-icons/fa-solid/DoorClosed.cjs'
 import { DoorOpen } from 'styled-icons/fa-solid/DoorOpen.cjs'
-import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),

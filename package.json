@@ -5,7 +5,7 @@
   "main": "pages/index.js",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node server.js --watch server.js --watch lib/",
+    "dev": "cross-env NODE_ENV=development node server.js --watch server.js --watch ./server/",
     "build": "next build",
     "start": "next start",
     "lint": "standard --verbose | snazzy && stylelint '**/*.js'",
@@ -36,7 +36,9 @@
     "isomorphic-unfetch": "^2.1.1",
     "jquery": "^3.3.1",
     "js-base64": "^2.4.8",
+    "net": "^1.0.2",
     "next": "^6.1.1",
+    "node-lightify": "^2.1.13",
     "polished": "^2.0.3",
     "react": "^16.5.1",
     "react-color": "^2.14.1",

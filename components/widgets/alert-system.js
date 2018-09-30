@@ -6,7 +6,6 @@ import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import VerticalList from '../vertival-list'
 import ActionButton from '../action-button'
-import { PlayCircle } from './program'
 import axios from 'axios'
 
 const schema = object().shape({
@@ -37,7 +36,7 @@ export default class AlertSystem extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {alertSystemActive: false, alertTriggered: false}
+    this.state = { alertSystemActive: false, alertTriggered: false }
   }
 
   componentDidMount () {
@@ -45,7 +44,7 @@ export default class AlertSystem extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 
@@ -101,10 +100,10 @@ export default class AlertSystem extends Component {
       axios.get(
         'http://homematic-raspi/addons/xmlapi/runprogram.cgi?program_id=' +
         this.props.activateSystemProgramId)
-        .then(this.setState({alertSystemActive: true}))
+        .then(this.setState({ alertSystemActive: true }))
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({error: true})
+          this.setState({ error: true })
         })
     }
   }
@@ -114,20 +113,21 @@ export default class AlertSystem extends Component {
       axios.get(
         'http://homematic-raspi/addons/xmlapi/runprogram.cgi?program_id=' +
         this.props.deactivateSystemProgramId)
-      .then(this.setState({alertSystemActive: false}))
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true})
-      })
+        .then(this.setState({ alertSystemActive: false }))
+        .catch((err) => {
+          console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
+          this.setState({ error: true })
+        })
     }
   }
 
   render () {
-    const {error, loading, alertSystemActive, alertTriggered} = this.state
-    const {title} = this.props
+    const { error, loading, alertSystemActive, alertTriggered } = this.state
+    const { title } = this.props
+    const background = this.state.alertTriggered ? '#f44336' : null
 
     return (
-      <Widget doubleWidth title={title} loading={loading} error={error}>
+      <Widget doubleWidth title={title} loading={loading} error={error} background={background}>
         <VerticalList>
           <ActionButton onClick={this.handleClickActivate.bind(this)}>
             activate

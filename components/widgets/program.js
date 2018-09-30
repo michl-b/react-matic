@@ -1,8 +1,6 @@
 import { Component } from 'react'
-import fetch from 'isomorphic-unfetch'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
-import xml2js from 'xml2js'
 import axios from 'axios'
 import ActionButton from '../action-button'
 import { PlayCircle } from 'styled-icons/fa-regular/PlayCircle.cjs'

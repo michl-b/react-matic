@@ -5,7 +5,6 @@ import Widget from '../widget'
 import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import { Person } from 'styled-icons/octicons/Person.cjs'
-import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),

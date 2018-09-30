@@ -2,11 +2,10 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
-import LightStatus from '../light-status'
 import xml2js from 'xml2js'
 import axios from 'axios'
+import LightStatus from '../light-status'
 import { Lightbulb } from 'styled-icons/fa-regular/Lightbulb.cjs'
-import myenv from '../../myenv'
 
 const schema = object().shape({
   deviceId: number().required(),

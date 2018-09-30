@@ -4,7 +4,7 @@ import { size } from 'polished'
 export default styled.button`
   background-color: ${props => props.active ? props.theme.palette.lightOnColor : props.theme.palette.disabledColor};
   color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
-  ${size('4em')}
+  ${size('4em')};
   text-align: center;
   display: flex;
   flex-direction: column;

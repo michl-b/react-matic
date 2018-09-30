@@ -2,8 +2,10 @@ const express = require('express')
 const next = require('next')
 const axios = require('axios')
 
+const osramRoutes = require('./server/router/osram')
+
 const dev = process.env.NODE_ENV !== 'production'
-const app = next({dev})
+const app = next({ dev })
 const handle = app.getRequestHandler()
 const port = parseInt(process.env.PORT, 10) || 3000
 
@@ -14,22 +16,23 @@ app
   .then(() => {
     const server = express()
 
-    server.use(require('express-status-monitor')())
-
     // Routing für die API
     server.get('/api/webcam/image', (req, res) => {
       res.type('jpeg')
       axios.get(process.env.WEBCAM_IMAGE_URL, {
-        auth: {username: process.env.WEBCAM_USER, password: process.env.WEBCAM_PASS},
+        auth: { username: process.env.WEBCAM_USER, password: process.env.WEBCAM_PASS },
         responseType: 'arraybuffer'
       })
         .then(axiosRes => {
           res.send(axiosRes.data)
         })
         .catch((err) => {
+          res.status(500).send(err)
           console.error(err)
         })
     })
+
+    server.use('/', osramRoutes)
 
     server.get('*', (req, res) => {
       return handle(req, res)
