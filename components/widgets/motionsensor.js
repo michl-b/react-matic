@@ -80,7 +80,7 @@ export default class MotionSensor extends Component {
       <Widget title={title} loading={loading} error={error}>
         <SensorStatus active={active}>
           {icon}
-          <div>{active ? 'Motion' : 'Nothing'}</div>
+          <div>{active ? 'Bewegung' : 'Nix'}</div>
         </SensorStatus>
       </Widget>
     )

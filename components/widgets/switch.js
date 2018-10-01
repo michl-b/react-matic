@@ -109,7 +109,7 @@ export default class Switch extends Component {
       <Widget title={title} loading={loading} error={error}>
         <LightStatus active={active} onClick={this.handleClick.bind(this)}>
           <Lightbulb size='36'/>
-          <div>{active ? 'ON' : 'OFF'}</div>
+          <div>{active ? 'An' : 'Aus'}</div>
         </LightStatus>
       </Widget>
     )

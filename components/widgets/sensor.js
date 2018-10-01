@@ -83,7 +83,7 @@ export default class Sensor extends Component {
       <Widget title={title} loading={loading} error={error}>
         <SensorStatus active={active}>
           {icon}
-          <div>{active ? 'Open' : 'Closed'}</div>
+          <div>{active ? 'Offen' : 'Zu'}</div>
         </SensorStatus>
       </Widget>
     )

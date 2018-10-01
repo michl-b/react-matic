@@ -116,11 +116,11 @@ export default class WindowShade extends Component {
 
         <VerticalList>
           <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '0.000000')}>Closed</ActionButtonSmall>
+            onClick={this.handleClick.bind(this, '0.000000')}>Zu</ActionButtonSmall>
           <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '0.700000')}>Middle</ActionButtonSmall>
+            onClick={this.handleClick.bind(this, '0.700000')}>Mitte</ActionButtonSmall>
           <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '1.000000')}>Open</ActionButtonSmall>
+            onClick={this.handleClick.bind(this, '1.000000')}>Offen</ActionButtonSmall>
         </VerticalList>
       </Widget>
     )

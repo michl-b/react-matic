@@ -171,7 +171,7 @@ export default class OsramLightify extends Component {
     const { error, loading } = this.state
     const { title } = this.props
 
-    const horizontalLabels = { 0: 'Off', 50: '50%', 100: '100%' }
+    const horizontalLabels = { 0: 'Aus', 50: '50%', 100: '100%' }
     const horizontalTempLabels = { 2700: '2700', 6500: '6500' }
     const style = { width: '15em', height: '3em' }
     const active = this.state.status === 1
@@ -179,7 +179,7 @@ export default class OsramLightify extends Component {
     return (
       <Widget doubleWidth doubleHeight loading={loading} error={error}>
         <Status active={active} onClick={this.handleOnOff.bind(this)}>
-          <div>{title}{active ? ' - ON' : ' - OFF'}</div>
+          <div>{title}{active ? ' - An' : ' - Aus'}</div>
         </Status>
 
         <CirclePicker

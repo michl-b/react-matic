@@ -24,13 +24,12 @@ export default () => (
     <Switch title='Außensteckdosen Haustüre' deviceId='3113'/>
     <Switch title='Zwischenstecker Schlafzimmer' deviceId='2007'/>
     <WindowShade title='Rollo 3m' deviceId='2802'/>
-    <Program title='Garage' programId='1383'/>
     <MotionSensor title='Bewegungsmelder' deviceId='1451'/>
-    <Sensor title='Türkontakt Haustür' deviceId='1715'/>
-    <Sensor title='Türkontakt Nebeneingangstür' deviceId='1773'/>
-    <Sensor title='Türkontakt Holzschuppen' deviceId='1609'/>
-    <Sensor title='Türkontakt Geräteschuppen' deviceId='1656'/>
-    <Sensor title='Torkontakt Garagentor' deviceId='1870'/>
+    <Sensor title='Haustür' deviceId='1715'/>
+    <Sensor title='Nebeneingangstür' deviceId='1773'/>
+    <Sensor title='Holzschuppen' deviceId='1609'/>
+    <Sensor title='Geräteschuppen' deviceId='1656'/>
+    <Sensor title='Garagentor' deviceId='1870'/>
     <Sensor title='Terrassentür rechts' deviceId='2914'/>
     <Sensor title='Terrassentür links' deviceId='2859'/>
     <OsramLightify
