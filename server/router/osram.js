@@ -56,7 +56,7 @@ routes.get('/api/osram/nodeBrightness', (req, res) => {
 routes.get('/api/osram/nodeTemperature', (req, res) => {
   var lightifyConnection = new lightify.lightify(process.env.OSRAM_GATEWAY_BASE_IP)
   lightifyConnection.connect().then(function () {
-    return lightifyConnection.nodeBrightness(req.query.mac, req.query.temperature, 0, false)
+    return lightifyConnection.nodeTemperature(req.query.mac, req.query.temperature, 0, false)
   }).then(function (data) {
     lightifyConnection.dispose()
     res.send(data)

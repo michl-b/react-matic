@@ -17,8 +17,11 @@ export default class Weather extends Component {
     title: 'Weather',
     city: 'Tirschenreuth',
     testMode: false,
-    description: 'Naja',
-    icon: ''
+    description: '',
+    icon: '01d',
+    wind: '',
+    humidity: '',
+    pressure: ''
   }
 
   state = {
@@ -30,7 +33,7 @@ export default class Weather extends Component {
 
   constructor (props) {
     super(props)
-    this.state = { active: false, temperature: '0.0', description: 'Naja' }
+    this.state = { active: false, temperature: '0.0', icon: '01d', description: '' }
   }
 
   componentDidMount () {
@@ -48,20 +51,22 @@ export default class Weather extends Component {
 
   async fetchInformation () {
     try {
-      let newTemperature = this.state.temperature
-      let newDescription = this.state.description
-      let newIcon = this.state.icon
       if (!this.props.testMode) {
         const res = await fetch(myEnv.app.baseUrl + '/api/openweathermap/current?city=' + this.props.city)
         const jsonResult = await res.json()
-        newTemperature = jsonResult.main.temp
-        newDescription = jsonResult.weather[0].description
-        newIcon = jsonResult.weather[0].icon
-      } else {
-        newTemperature = !this.state.temperature
-      }
 
-      this.setState({ temperature: newTemperature, description: newDescription, icon: newIcon, error: false, loading: false })
+        this.setState({
+          temperature: jsonResult.main.temp,
+          humidity: jsonResult.main.humidity,
+          pressure: jsonResult.main.pressure,
+          description: jsonResult.weather[0].description,
+          icon: jsonResult.weather[0].icon,
+          wind: jsonResult.wind.speed,
+          error: false,
+          loading: false })
+      } else {
+        this.setState({ temperature: '99.99', description: 'Rain', error: false, loading: false })
+      }
     } catch (error) {
       console.log(error)
       this.setState({ error: true, loading: false })
@@ -72,16 +77,19 @@ export default class Weather extends Component {
   }
 
   render () {
-    const { error, loading, temperature, description, icon } = this.state
+    const { error, loading, temperature, description, icon, wind, humidity, pressure } = this.state
     const { city } = this.props
 
     const iconUrl = 'http://openweathermap.org/img/w/' + icon + '.png'
 
     return (
       <Widget doubleHeight title={city} loading={loading} error={error}>
-        <img src={iconUrl} />
+        <img src={iconUrl} width='50' />
         <div>{description}</div>
-        <h2>{temperature} °C</h2>
+        <h1>{temperature} °C</h1>
+        <h4>Wind: {wind} km/h</h4>
+        <h4>Feucht.: {humidity} %</h4>
+        <h4>Luftdr.: {pressure} hPa</h4>
       </Widget>
     )
   }

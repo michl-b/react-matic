@@ -23,9 +23,9 @@ export default class NavbarDark extends React.Component {
     return (
       <Container fluid>
         <Navbar expandSm dark>
-          <Nav start>
+          <Nav start={1}>
             <NavbarLink dark brand href='/'><img src='/static/homematic.png' height='24' /> REACT-MATIC</NavbarLink>
-            <Nav end>
+            <Nav end={1}>
               <Button
                 dark
                 outline
@@ -37,10 +37,9 @@ export default class NavbarDark extends React.Component {
               </Button>
             </Nav>
           </Nav>
-          <Nav start collapse expandSm hidden={hidden}>
+          <Nav start={1} collapse expandSm hidden={hidden}>
             <NavbarLink dark href='/'>Dashboard</NavbarLink>
             <NavbarLink dark href='/webcams'>Webcams</NavbarLink>
-            <NavbarLink dark href='/demo'>Demo</NavbarLink>
           </Nav>
         </Navbar>
       </Container>
