@@ -4,7 +4,8 @@ import { size } from 'polished'
 export default styled.span`
   background-color: ${props => props.active ? props.theme.palette.errorColor : props.theme.palette.successColor};
   color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
-  ${size('5em')}
+  height: 4em;
+  width: 5em;
   text-align: center;
   display: flex;
   flex-direction: column;

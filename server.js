@@ -3,6 +3,7 @@ const next = require('next')
 const axios = require('axios')
 
 const osramRoutes = require('./server/router/osram')
+const openweathermapRoutes = require('./server/router/openweathermap')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -33,6 +34,7 @@ app
     })
 
     server.use('/', osramRoutes)
+    server.use('/', openweathermapRoutes)
 
     server.get('*', (req, res) => {
       return handle(req, res)
