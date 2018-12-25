@@ -2,11 +2,10 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
-import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import VerticalList from '../vertival-list'
-import ActionButton from '../action-button'
 import axios from 'axios'
+import styled from 'styled-components'
 
 const schema = object().shape({
   alertVariableId: number().required(),
@@ -19,12 +18,31 @@ const schema = object().shape({
   testMode: boolean()
 })
 
+const Status = styled.span`
+  background-color: ${props => props.active ? props.theme.palette.errorColor : props.theme.palette.successColor};
+  color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
+  height: 5em;
+  width: 10em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-left: 2px;
+  margin-right: 2px;
+`
+
 export default class AlertSystem extends Component {
   static defaultProps = {
     interval: 1000 * 5,
     title: 'AlertSystem',
     statusUrl: 'http://homematic-raspi/addons/xmlapi/sysvar.cgi?ise_id=',
-    testMode: false
+    testMode: false,
+    textSystemActive: 'System Active',
+    textSystemInactive: 'System Inactive',
+    textAlertActive: 'Alert',
+    textAlertInactive: 'Fine'
   }
 
   state = {
@@ -53,7 +71,7 @@ export default class AlertSystem extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl, alertVariableId, alertSystemVariableId} = this.props
+    const { statusUrl, alertVariableId, alertSystemVariableId } = this.props
 
     try {
       let newAlertSystemActive = this.state.alertSystemActive
@@ -88,7 +106,7 @@ export default class AlertSystem extends Component {
       })
     } catch (error) {
       console.log(error)
-      this.setState({error: true, loading: false})
+      this.setState({ error: true, loading: false })
     } finally {
       this.timeout = setTimeout(() => this.fetchInformation(),
         this.props.interval)
@@ -97,23 +115,14 @@ export default class AlertSystem extends Component {
 
   handleClickActivate () {
     if (!this.props.testMode) {
-      axios.get(
-        'http://homematic-raspi/addons/xmlapi/runprogram.cgi?program_id=' +
-        this.props.activateSystemProgramId)
-        .then(this.setState({ alertSystemActive: true }))
-        .catch((err) => {
-          console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({ error: true })
-        })
-    }
-  }
+      let url = 'http://homematic-raspi/addons/xmlapi/runprogram.cgi?program_id=' + this.props.activateSystemProgramId
 
-  handleClickDeactivate () {
-    if (!this.props.testMode) {
-      axios.get(
-        'http://homematic-raspi/addons/xmlapi/runprogram.cgi?program_id=' +
-        this.props.deactivateSystemProgramId)
-        .then(this.setState({ alertSystemActive: false }))
+      if (this.state.alertSystemActive) {
+        url = 'http://homematic-raspi/addons/xmlapi/runprogram.cgi?program_id=' + this.props.deactivateSystemProgramId
+      }
+
+      axios.get(url)
+        .then(this.setState({ alertSystemActive: !this.state.alertSystemActive }))
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
           this.setState({ error: true })
@@ -123,24 +132,18 @@ export default class AlertSystem extends Component {
 
   render () {
     const { error, loading, alertSystemActive, alertTriggered } = this.state
-    const { title } = this.props
+    const { title, textSystemActive, textSystemInactive, textAlertActive, textAlertInactive } = this.props
     const background = this.state.alertTriggered ? '#f44336' : null
 
     return (
       <Widget doubleWidth title={title} loading={loading} error={error} background={background}>
         <VerticalList>
-          <ActionButton onClick={this.handleClickActivate.bind(this)}>
-            activate
-          </ActionButton>
-          <SensorStatus active={alertTriggered}>
-            <div>{alertTriggered ? 'Alert' : 'Fine'}</div>
-          </SensorStatus>
-          <SensorStatus active={alertSystemActive}>
-            <div>{alertSystemActive ? 'System Active' : 'System Inactive'}</div>
-          </SensorStatus>
-          <ActionButton onClick={this.handleClickDeactivate.bind(this)}>
-            de- activate
-          </ActionButton>
+          <Status active={alertTriggered}>
+            <div>{alertTriggered ? textAlertActive : textAlertInactive}</div>
+          </Status>
+          <Status active={alertSystemActive} onClick={this.handleClickActivate.bind(this)}>
+            <div>{alertSystemActive ? textSystemActive : textSystemInactive}</div>
+          </Status>
         </VerticalList>
       </Widget>
     )

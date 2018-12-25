@@ -2,7 +2,6 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
-import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import { DoorClosed } from 'styled-icons/fa-solid/DoorClosed.cjs'
 import { DoorOpen } from 'styled-icons/fa-solid/DoorOpen.cjs'
@@ -20,7 +19,9 @@ export default class Sensor extends Component {
     interval: 1000 * 5,
     title: 'Sensor',
     statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id=',
-    testMode: false
+    testMode: false,
+    textActive: 'Open',
+    textInactive: 'Closed'
   }
 
   state = {
@@ -39,7 +40,7 @@ export default class Sensor extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 
@@ -48,7 +49,7 @@ export default class Sensor extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl, deviceId} = this.props
+    const { statusUrl, deviceId } = this.props
 
     try {
       let newActive = this.state.active
@@ -63,10 +64,10 @@ export default class Sensor extends Component {
         newActive = !this.state.active
       }
 
-      this.setState({active: newActive, error: false, loading: false})
+      this.setState({ active: newActive, error: false, loading: false })
     } catch (error) {
       console.log(error)
-      this.setState({error: true, loading: false})
+      this.setState({ error: true, loading: false })
     } finally {
       this.timeout = setTimeout(() => this.fetchInformation(),
         this.props.interval)
@@ -74,17 +75,15 @@ export default class Sensor extends Component {
   }
 
   render () {
-    const {error, loading, active} = this.state
-    const {title} = this.props
+    const { error, loading, active } = this.state
+    const { title, textActive, textInactive } = this.props
 
     const icon = this.state.active ? <DoorOpen size='36' /> : <DoorClosed size='36' />
 
     return (
-      <Widget title={title} loading={loading} error={error}>
-        <SensorStatus active={active}>
-          {icon}
-          <div>{active ? 'Offen' : 'Zu'}</div>
-        </SensorStatus>
+      <Widget title={title} loading={loading} error={error} active={active} background={active ? '#f44336' : '#4caf50'}>
+        {icon}
+        <div>{active ? textActive : textInactive}</div>
       </Widget>
     )
   }

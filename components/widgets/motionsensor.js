@@ -2,7 +2,6 @@ import { Component } from 'react'
 import fetch from 'isomorphic-unfetch'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
-import SensorStatus from '../sensor-status'
 import xml2js from 'xml2js'
 import { Person } from 'styled-icons/octicons/Person.cjs'
 
@@ -19,7 +18,9 @@ export default class MotionSensor extends Component {
     interval: 1000 * 5,
     title: 'MotionSensor',
     statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id=',
-    testMode: false
+    testMode: false,
+    textActive: 'Motion',
+    textInactive: 'Nothing'
   }
 
   state = {
@@ -74,14 +75,12 @@ export default class MotionSensor extends Component {
 
   render () {
     const {error, loading, active} = this.state
-    const {title} = this.props
+    const {title, textActive, textInactive} = this.props
     const icon = this.state.active ? <Person size='36' /> : ''
     return (
-      <Widget title={title} loading={loading} error={error}>
-        <SensorStatus active={active}>
-          {icon}
-          <div>{active ? 'Bewegung' : 'Nix'}</div>
-        </SensorStatus>
+      <Widget title={title} loading={loading} error={error} active={active} background={active ? '#f44336' : '#4caf50'}>
+        {icon}
+        <div>{active ? textActive : textInactive}</div>
       </Widget>
     )
   }

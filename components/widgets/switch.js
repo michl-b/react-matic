@@ -4,8 +4,8 @@ import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import xml2js from 'xml2js'
 import axios from 'axios'
-import LightStatus from '../light-status'
 import { Lightbulb } from 'styled-icons/fa-regular/Lightbulb.cjs'
+import styled from "styled-components";
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -24,7 +24,9 @@ export default class Switch extends Component {
     readOnly: false,
     statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}',
     actionUrl: 'http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}',
-    testMode: false
+    testMode: false,
+    textActive: 'On',
+    textInactive: 'Off'
   }
 
   state = {
@@ -35,7 +37,7 @@ export default class Switch extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {active: false}
+    this.state = { active: false }
   }
 
   handleClick () {
@@ -45,7 +47,6 @@ export default class Switch extends Component {
           this.props.deviceId)
         url = url.replace('{value}', !this.state.active)
         let newActive = this.state.active
-        console.log(url)
         axios.get(url)
         .then(response => {
           xml2js.parseString(response.data, function (err, result) {
@@ -55,7 +56,7 @@ export default class Switch extends Component {
               newActive = false
             }
           })
-          this.setState({active: newActive, error: false, loading: false})
+          this.setState({ active: newActive, error: false, loading: false })
         })
       }
     }
@@ -66,7 +67,7 @@ export default class Switch extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 
@@ -104,13 +105,11 @@ export default class Switch extends Component {
 
   render () {
     const {error, loading, active} = this.state
-    const {title} = this.props
+    const {title, textActive, textInactive} = this.props
     return (
-      <Widget title={title} loading={loading} error={error}>
-        <LightStatus active={active} onClick={this.handleClick.bind(this)}>
-          <Lightbulb size='36'/>
-          <div>{active ? 'An' : 'Aus'}</div>
-        </LightStatus>
+      <Widget title={title} loading={loading} error={error} active={active} background={active ? '#ffeb3b' : '#424242'} onClick={this.handleClick.bind(this)}>
+        <Lightbulb size='36'/>
+        <div>{active ? textActive : textInactive}</div>
       </Widget>
     )
   }
