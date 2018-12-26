@@ -2,24 +2,31 @@ import { Component } from 'react'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import axios from 'axios'
-import Slider from 'react-rangeslider'
-import { CirclePicker } from 'react-color'
+import { HuePicker } from 'react-color'
 import styled from 'styled-components'
 import myEnv from '../../myenv'
+import VerticalList from '../vertival-list'
+import ActionButtonSmall from '../action-button-small'
 
-const Status = styled.button`
-  background-color: ${props => props.active ? props.theme.palette.lightOnColor : props.theme.palette.disabledColor};
+const Status = styled.div`
+  width: 18em;
+  height: 6em;
+  align-items: center;
+  background-color: ${props => props.active ? props.theme.palette.lightOnColor : props.theme.palette.canvasColor};
   color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
-  width: 100%;
-  height: 2em;
-  text-align: center;
+  border: 1px solid ${props => props.theme.palette.borderColor};
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  justify-content: flex-start;
+  margin: 0.5em;
+  padding: 0.5em;
+  text-align: center;
+  align-content:flex-start;
+`
+
+const Title = styled.h4`
+  text-align: center;
 `
 
 const schema = object().shape({
@@ -101,15 +108,9 @@ export default class OsramLightify extends Component {
     }
   }
 
-  handleChangeBrightnessSlider = level => {
-    this.setState({
-      brightness: level
-    })
-  }
-
-  handleChangeBrightnessSliderComplete = () => {
+  handleChangeBrightness (value) {
     if (!this.props.testMode) {
-      var url = myEnv.app.baseUrl + '/api/osram/nodeBrightness?mac=' + this.props.mac + '&brightness=' + this.state.brightness
+      var url = myEnv.app.baseUrl + '/api/osram/nodeBrightness?mac=' + this.props.mac + '&brightness=' + value
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -117,17 +118,12 @@ export default class OsramLightify extends Component {
           this.setState({ error: true, loading: false })
         })
     }
+    this.setState({ brightness: value })
   }
 
-  handleChangeTemperatureSlider = level => {
-    this.setState({
-      temperature: level
-    })
-  }
-
-  handleChangeTemperatureSliderComplete = () => {
+  handleChangeTemperature (value) {
     if (!this.props.testMode) {
-      var url = myEnv.app.baseUrl + '/api/osram/nodeTemperature?mac=' + this.props.mac + '&temperature=' + this.state.temperature
+      var url = myEnv.app.baseUrl + '/api/osram/nodeTemperature?mac=' + this.props.mac + '&temperature=' + value
       axios.get(url)
         .then(this.fetchInformation())
         .catch((err) => {
@@ -135,6 +131,7 @@ export default class OsramLightify extends Component {
           this.setState({ error: true, loading: false })
         })
     }
+    this.setState({ temperature: value })
   }
 
   setColor = () => {
@@ -164,54 +161,48 @@ export default class OsramLightify extends Component {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
           this.setState({ error: true, loading: false })
         })
+      this.setState({ status: newStatus })
     }
   }
 
   render () {
-    const { error, loading } = this.state
+    const { error, loading, brightness, temperature } = this.state
     const { title } = this.props
 
-    const horizontalLabels = { 0: 'Aus', 50: '50%', 100: '100%' }
-    const horizontalTempLabels = { 2700: '2700', 6500: '6500' }
-    const style = { width: '15em', height: '3em' }
     const active = this.state.status === 1
 
     return (
       <Widget doubleWidth doubleHeight loading={loading} error={error}>
-        <Status active={active} onClick={this.handleOnOff.bind(this)}>
-          <div>{title}{active ? ' - An' : ' - Aus'}</div>
+        <Status doubleWidth active={active} onClick={this.handleOnOff.bind(this)}>
+          <Title>{title}</Title>
+          <div>brightness: {brightness}</div>
+          <div>temperature: {temperature}</div>
         </Status>
 
-        <CirclePicker
+        <HuePicker
           color={this.state.color}
           onChangeComplete={this.handleChangeColorComplete.bind(this)}
         />
-        <div style={style}>
-          <Slider
-            id='brightnessSlider'
-            min={0}
-            max={100}
-            step={25}
-            value={this.state.brightness}
-            tooltip={false}
-            onChange={this.handleChangeBrightnessSlider.bind(this)}
-            onChangeComplete={this.handleChangeBrightnessSliderComplete.bind(this)}
-            labels={horizontalLabels}
-          />
-        </div>
-        <div style={style}>
-          <Slider
-            id='tempSlider'
-            min={2700}
-            max={6500}
-            step={100}
-            value={this.state.temperature}
-            tooltip={false}
-            onChange={this.handleChangeTemperatureSlider.bind(this)}
-            onChangeComplete={this.handleChangeTemperatureSliderComplete.bind(this)}
-            labels={horizontalTempLabels}
-          />
-        </div>
+
+        <p>brightness</p>
+        <VerticalList doubleWidth>
+          <ActionButtonSmall
+            onClick={this.handleChangeBrightness.bind(this, '0')}>Off</ActionButtonSmall>
+          <ActionButtonSmall
+            onClick={this.handleChangeBrightness.bind(this, '50')}>50%</ActionButtonSmall>
+          <ActionButtonSmall
+            onClick={this.handleChangeBrightness.bind(this, '100')}>On</ActionButtonSmall>
+        </VerticalList>
+
+        <p>temperature</p>
+        <VerticalList doubleWidth>
+          <ActionButtonSmall
+            onClick={this.handleChangeTemperature.bind(this, '2700')}>2700</ActionButtonSmall>
+          <ActionButtonSmall
+            onClick={this.handleChangeTemperature.bind(this, '4000')}>4000</ActionButtonSmall>
+          <ActionButtonSmall
+            onClick={this.handleChangeTemperature.bind(this, '6500')}>6500</ActionButtonSmall>
+        </VerticalList>
       </Widget>
     )
   }

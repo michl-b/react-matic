@@ -38,7 +38,7 @@ export default class WindowShade extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {value: 0.000000}
+    this.state = { value: 0.000000 }
   }
 
   handleChange (event) {
@@ -48,10 +48,10 @@ export default class WindowShade extends Component {
       axios.get(url)
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({error: true, loading: false})
+          this.setState({ error: true, loading: false })
         })
     }
-    this.setState({value: event.target.value})
+    this.setState({ value: event.target.value })
   }
 
   handleClick (value) {
@@ -61,10 +61,10 @@ export default class WindowShade extends Component {
       axios.get(url)
         .catch((err) => {
           console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-          this.setState({error: true, loading: false})
+          this.setState({ error: true, loading: false })
         })
     }
-    this.setState({value: value})
+    this.setState({ value: value })
   }
 
   componentDidMount () {
@@ -72,7 +72,7 @@ export default class WindowShade extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 
@@ -81,7 +81,7 @@ export default class WindowShade extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl, deviceId} = this.props
+    const { statusUrl, deviceId } = this.props
 
     try {
       let newValue = this.state.value
@@ -97,10 +97,10 @@ export default class WindowShade extends Component {
         newValue = 0.550000
       }
 
-      this.setState({value: newValue, error: false, loading: false})
+      this.setState({ value: newValue, error: false, loading: false })
     } catch (error) {
       console.log(error)
-      this.setState({error: true, loading: false})
+      this.setState({ error: true, loading: false })
     } finally {
       this.timeout = setTimeout(() => this.fetchInformation(),
         this.props.interval)
@@ -108,13 +108,14 @@ export default class WindowShade extends Component {
   }
 
   render () {
-    const {error, loading} = this.state
-    const {title} = this.props
+    const { error, loading, value } = this.state
+    const { title } = this.props
+    let intValue = parseInt((parseFloat(value)) * 100)
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
-        <Label>{this.state.value}</Label>
+        <Label>{intValue}%</Label>
 
-        <VerticalList>
+        <VerticalList doubleWidth>
           <ActionButtonSmall
             onClick={this.handleClick.bind(this, '0.000000')}>Zu</ActionButtonSmall>
           <ActionButtonSmall

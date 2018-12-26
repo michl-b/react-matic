@@ -9,6 +9,7 @@ const Container = styled.div`
   background-color: ${props => props.background ? props.background : props.theme.palette.canvasColor};
   color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
   border: 1px solid ${props => props.theme.palette.borderColor};
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content:flex-start;
@@ -22,7 +23,7 @@ const Title = styled.h4`
   text-align: center;
 `
 
-export default ({children, error = false, loading = false, title = '', doubleWidth = false, doubleHeight = false, background = null, active = false, onClick = null}) => {
+export default ({ children, error = false, loading = false, title = '', doubleWidth = false, doubleHeight = false, background = null, active = false, onClick = null }) => {
   let content
 
   if (loading) {
@@ -35,7 +36,12 @@ export default ({children, error = false, loading = false, title = '', doubleWid
   }
 
   return (
-    <Container doubleWidth={doubleWidth} doubleHeight={doubleHeight} background={background} active={active} onClick={onClick}>
+    <Container
+      doubleWidth={doubleWidth}
+      doubleHeight={doubleHeight}
+      background={background}
+      active={active}
+      onClick={onClick}>
       {title ? <Title>{title}</Title> : ''}
       {content}
     </Container>

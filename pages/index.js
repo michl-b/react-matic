@@ -23,7 +23,7 @@ export default () => (
       textAlertActive='Alarm'
       textAlertInactive='Sicher' />
     <Switch title='Esszimmerlicht' deviceId='2767' textActive='An' textInactive='Aus' />
-    <Switch title='Stehlampe' deviceId='1279' textActive='An' textInactive='Aus' />
+    <Switch title='Christbaum' deviceId='1279' textActive='An' textInactive='Aus' />
     <Switch title='Lichtschalter Garage außen' deviceId='1814' textActive='An' textInactive='Aus' />
     <Switch title='Außensteckdosen Haustüre' deviceId='3113' textActive='An' textInactive='Aus' />
     <Switch title='Zwischenstecker Schlafzimmer' deviceId='2007' textActive='An' textInactive='Aus' />

@@ -31,7 +31,10 @@ Build your React-Matic for production with `yarn build` and then start the
 server with `yarn start`.
 
 ### RPi
-`git pull && yarn && yarn build && docker build -t react-matic . && docker stop reactMatic && docker run --name reactMatic --rm -d -p 3000:3000 react-matic`
+go to your app working directory and run the following commands.
+```bash
+git pull && yarn && yarn build && docker build -t react-matic . && docker stop reactMatic && docker run --name reactMatic --rm -d -p 3000:3000 react-matic
+```
 
 ### Docker
 

@@ -4,6 +4,7 @@ export default styled.div`
   background-color: ${props => props.theme.palette.primaryColor};
   color: ${props => props.theme.palette.white};
   width: 5em;
+  height: 2em;
   text-align: center;
   display: flex;
   flex-direction: column;
