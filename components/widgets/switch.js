@@ -5,7 +5,6 @@ import Widget from '../widget'
 import xml2js from 'xml2js'
 import axios from 'axios'
 import { Lightbulb } from 'styled-icons/fa-regular/Lightbulb.cjs'
-import styled from "styled-components";
 
 const schema = object().shape({
   deviceId: number().required(),
@@ -48,16 +47,16 @@ export default class Switch extends Component {
         url = url.replace('{value}', !this.state.active)
         let newActive = this.state.active
         axios.get(url)
-        .then(response => {
-          xml2js.parseString(response.data, function (err, result) {
-            if (result.result.changed[0].$.new_value === 'true') {
-              newActive = true
-            } else {
-              newActive = false
-            }
+          .then(response => {
+            xml2js.parseString(response.data, function (err, result) {
+              if (result.result.changed[0].$.new_value === 'true') {
+                newActive = true
+              } else {
+                newActive = false
+              }
+            })
+            this.setState({ active: newActive, error: false, loading: false })
           })
-          this.setState({ active: newActive, error: false, loading: false })
-        })
       }
     }
   }
@@ -76,7 +75,7 @@ export default class Switch extends Component {
   }
 
   async fetchInformation () {
-    const {statusUrl, deviceId} = this.props
+    const { statusUrl, deviceId } = this.props
 
     try {
       let newActive = this.state.active
@@ -93,10 +92,10 @@ export default class Switch extends Component {
         })
       }
 
-      this.setState({active: newActive, error: false, loading: false})
+      this.setState({ active: newActive, error: false, loading: false })
     } catch (error) {
       console.log(error)
-      this.setState({error: true, loading: false})
+      this.setState({ error: true, loading: false })
     } finally {
       this.timeout = setTimeout(() => this.fetchInformation(),
         this.props.interval)
@@ -104,12 +103,14 @@ export default class Switch extends Component {
   }
 
   render () {
-    const {error, loading, active} = this.state
-    const {title, textActive, textInactive} = this.props
+    const { error, loading, active } = this.state
+    const { title, textActive, textInactive } = this.props
     return (
       <Widget title={title} loading={loading} error={error} active={active} background={active ? '#ffeb3b' : '#424242'} onClick={this.handleClick.bind(this)}>
-        <Lightbulb size='36'/>
-        <div>{active ? textActive : textInactive}</div>
+        <div style={{ paddingTop: 2 + 'em' }}>
+          <Lightbulb size='36'/>
+          <div>{active ? textActive : textInactive}</div>
+        </div>
       </Widget>
     )
   }

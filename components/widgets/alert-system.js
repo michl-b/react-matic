@@ -137,14 +137,16 @@ export default class AlertSystem extends Component {
 
     return (
       <Widget doubleWidth title={title} loading={loading} error={error} background={background}>
-        <VerticalList>
-          <Status active={alertTriggered}>
-            <div>{alertTriggered ? textAlertActive : textAlertInactive}</div>
-          </Status>
-          <Status active={alertSystemActive} onClick={this.handleClickActivate.bind(this)}>
-            <div>{alertSystemActive ? textSystemActive : textSystemInactive}</div>
-          </Status>
-        </VerticalList>
+        <div style={{ paddingTop: 2 + 'em' }}>
+          <VerticalList>
+            <Status active={alertTriggered}>
+              <div>{alertTriggered ? textAlertActive : textAlertInactive}</div>
+            </Status>
+            <Status active={alertSystemActive} onClick={this.handleClickActivate.bind(this)}>
+              <div>{alertSystemActive ? textSystemActive : textSystemInactive}</div>
+            </Status>
+          </VerticalList>
+        </div>
       </Widget>
     )
   }

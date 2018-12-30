@@ -3,15 +3,15 @@ import DateTime from '../components/widgets/datetime'
 import Switch from '../components/widgets/switch'
 import Sensor from '../components/widgets/sensor'
 import MotionSensor from '../components/widgets/motionsensor'
-import Weather from '../components/widgets/weather'
-import OsramLightify from '../components/widgets/osram-lightify'
+import OsramLightifyVertical from '../components/widgets/osram-lightify-vertical'
 import WindowShade from '../components/widgets/window-shade'
 import AlertSystem from '../components/widgets/alert-system'
 import darkTheme from '../styles/dark-theme'
+import WeatherVertical from '../components/widgets/weather-vertical'
 
 export default () => (
   <Page theme={darkTheme} title='Dashboard'>
-    <DateTime/>
+    <DateTime />
     <AlertSystem
       title='Alarmsystem'
       alertVariableId='1235'
@@ -38,8 +38,8 @@ export default () => (
     <Sensor title='Garagentor' deviceId='1870' textActive='Offen' textInactive='Zu' />
     <Sensor title='Terrassentür rechts' deviceId='2914' textActive='Offen' textInactive='Zu' />
     <Sensor title='Terrassentür links' deviceId='2859' textActive='Offen' textInactive='Zu' />
-    <Weather city='Tirschenreuth' />
-    <OsramLightify
+    <WeatherVertical city='Tirschenreuth' />
+    <OsramLightifyVertical
       title='Lichtleiste TV'
       mac='e1ffa200aa3eb07c'
       textOff='Aus'

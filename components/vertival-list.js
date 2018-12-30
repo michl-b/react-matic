@@ -4,6 +4,6 @@ export default styled.span`
   background: none;
   height: ${props => props.doubleHeight ? '8em' : '2em'};
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  align-content: center;
 `

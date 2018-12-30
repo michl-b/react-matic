@@ -114,15 +114,16 @@ export default class WindowShade extends Component {
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
         <Label>{intValue}%</Label>
-
-        <VerticalList doubleWidth>
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '0.000000')}>Zu</ActionButtonSmall>
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '0.700000')}>Mitte</ActionButtonSmall>
-          <ActionButtonSmall
-            onClick={this.handleClick.bind(this, '1.000000')}>Offen</ActionButtonSmall>
-        </VerticalList>
+        <div style={{ paddingTop: 1 + 'em', paddingBottom: 1 + 'em' }} >
+          <VerticalList doubleWidth>
+            <ActionButtonSmall
+              onClick={this.handleClick.bind(this, '0.000000')}>Zu</ActionButtonSmall>
+            <ActionButtonSmall
+              onClick={this.handleClick.bind(this, '0.700000')}>Mitte</ActionButtonSmall>
+            <ActionButtonSmall
+              onClick={this.handleClick.bind(this, '1.000000')}>Offen</ActionButtonSmall>
+          </VerticalList>
+        </div>
       </Widget>
     )
   }

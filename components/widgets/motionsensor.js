@@ -79,8 +79,10 @@ export default class MotionSensor extends Component {
     const icon = this.state.active ? <Person size='36' /> : ''
     return (
       <Widget title={title} loading={loading} error={error} active={active} background={active ? '#f44336' : '#4caf50'}>
-        {icon}
-        <div>{active ? textActive : textInactive}</div>
+        <div style={{ paddingTop: 2 + 'em' }}>
+          {icon}
+          <div>{active ? textActive : textInactive}</div>
+        </div>
       </Widget>
     )
   }

@@ -32,7 +32,7 @@ export default class Sensor extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {active: false}
+    this.state = { active: false }
   }
 
   componentDidMount () {
@@ -78,12 +78,14 @@ export default class Sensor extends Component {
     const { error, loading, active } = this.state
     const { title, textActive, textInactive } = this.props
 
-    const icon = this.state.active ? <DoorOpen size='36' /> : <DoorClosed size='36' />
+    const icon = this.state.active ? <DoorOpen size='36'/> : <DoorClosed size='36'/>
 
     return (
       <Widget title={title} loading={loading} error={error} active={active} background={active ? '#f44336' : '#4caf50'}>
-        {icon}
-        <div>{active ? textActive : textInactive}</div>
+        <div style={{ paddingTop: 2 + 'em' }}>
+          {icon}
+          <div>{active ? textActive : textInactive}</div>
+        </div>
       </Widget>
     )
   }
