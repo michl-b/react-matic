@@ -11,7 +11,7 @@ import darkTheme from '../styles/dark-theme'
 
 export default () => (
   <Page theme={darkTheme} title='Dashboard'>
-    <DateTime />
+    <DateTime/>
     <AlertSystem
       title='Alarmsystem'
       alertVariableId='1235'
@@ -22,13 +22,15 @@ export default () => (
       textSystemInactive='Aus'
       textAlertActive='Alarm'
       textAlertInactive='Sicher' />
-    <Switch title='Esszimmerlicht' deviceId='2767' textActive='An' textInactive='Aus' />
+    <Switch title='Esszimmer' deviceId='2767' textActive='An' textInactive='Aus' />
     <Switch title='Christbaum' deviceId='1279' textActive='An' textInactive='Aus' />
-    <Switch title='Lichtschalter Garage außen' deviceId='1814' textActive='An' textInactive='Aus' />
-    <Switch title='Außensteckdosen Haustüre' deviceId='3113' textActive='An' textInactive='Aus' />
-    <Switch title='Zwischenstecker Schlafzimmer' deviceId='2007' textActive='An' textInactive='Aus' />
+    <Switch title='Stehlampe' deviceId='3255' textActive='An' textInactive='Aus' />
+    <Switch title='Lampe Flur' deviceId='3312' textActive='An' textInactive='Aus' />
+    <Switch title='Garage außen' deviceId='1814' textActive='An' textInactive='Aus' />
+    <Switch title='Haustüre außen' deviceId='3113' textActive='An' textInactive='Aus' />
+    <Switch title='Schlafzimmer Stecker' deviceId='2007' textActive='An' textInactive='Aus' />
     <WindowShade title='Rollo 3m' deviceId='2802' />
-    <MotionSensor title='Bewegungsmelder' deviceId='1451' textActive='Bewegung' textInactive='Nix' />
+    <MotionSensor title='Bewegung Windfang' deviceId='1451' textActive='Bewegung' textInactive='Nix' />
     <Sensor title='Haustür' deviceId='1715' textActive='Offen' textInactive='Zu' />
     <Sensor title='Nebeneingangstür' deviceId='1773' textActive='Offen' textInactive='Zu' />
     <Sensor title='Holzschuppen' deviceId='1609' textActive='Offen' textInactive='Zu' />
@@ -39,6 +41,11 @@ export default () => (
     <Weather city='Tirschenreuth' />
     <OsramLightify
       title='Lichtleiste TV'
-      mac='e1ffa200aa3eb07c' />
+      mac='e1ffa200aa3eb07c'
+      textOff='Aus'
+      textOn='An'
+      textBrightness='Helligkeit'
+      textTemperature='Temperatur'
+    />
   </Page>
 )

@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import myEnv from '../../myenv'
 import VerticalList from '../vertival-list'
 import ActionButtonSmall from '../action-button-small'
+import Title from '../title'
 
 const Status = styled.div`
   width: 18em;
@@ -25,10 +26,6 @@ const Status = styled.div`
   align-content:flex-start;
 `
 
-const Title = styled.h4`
-  text-align: center;
-`
-
 const schema = object().shape({
   mac: string().required(),
   interval: number(),
@@ -40,7 +37,11 @@ export default class OsramLightify extends Component {
   static defaultProps = {
     interval: 1000 * 5,
     title: 'Osram Lightify',
-    testMode: false
+    testMode: false,
+    textOff: 'Off',
+    textOn: 'On',
+    textBrightness: 'brightness',
+    textTemperature: 'temperature'
   }
 
   state = {
@@ -167,7 +168,7 @@ export default class OsramLightify extends Component {
 
   render () {
     const { error, loading, brightness, temperature } = this.state
-    const { title } = this.props
+    const { title, textOff, textOn, textBrightness, textTemperature } = this.props
 
     const active = this.state.status === 1
 
@@ -175,8 +176,8 @@ export default class OsramLightify extends Component {
       <Widget doubleWidth doubleHeight loading={loading} error={error}>
         <Status doubleWidth active={active} onClick={this.handleOnOff.bind(this)}>
           <Title>{title}</Title>
-          <div>brightness: {brightness}</div>
-          <div>temperature: {temperature}</div>
+          <div>{textBrightness}: {brightness}%</div>
+          <div>{textTemperature}: {temperature} Kelvin</div>
         </Status>
 
         <HuePicker
@@ -184,17 +185,17 @@ export default class OsramLightify extends Component {
           onChangeComplete={this.handleChangeColorComplete.bind(this)}
         />
 
-        <p>brightness</p>
+        <p>{textBrightness}</p>
         <VerticalList doubleWidth>
           <ActionButtonSmall
-            onClick={this.handleChangeBrightness.bind(this, '0')}>Off</ActionButtonSmall>
+            onClick={this.handleChangeBrightness.bind(this, '0')}>{textOff}</ActionButtonSmall>
           <ActionButtonSmall
             onClick={this.handleChangeBrightness.bind(this, '50')}>50%</ActionButtonSmall>
           <ActionButtonSmall
-            onClick={this.handleChangeBrightness.bind(this, '100')}>On</ActionButtonSmall>
+            onClick={this.handleChangeBrightness.bind(this, '100')}>{textOn}</ActionButtonSmall>
         </VerticalList>
 
-        <p>temperature</p>
+        <p>{textTemperature}</p>
         <VerticalList doubleWidth>
           <ActionButtonSmall
             onClick={this.handleChangeTemperature.bind(this, '2700')}>2700</ActionButtonSmall>

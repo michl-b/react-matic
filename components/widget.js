@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import LoadingIndicator from './loading-indicator'
 import ErrorIcon from './error-icon'
+import Title from './title'
 
 const Container = styled.div`
   width: ${props => props.doubleWidth ? '20.2em' : '9em'};
@@ -17,10 +18,6 @@ const Container = styled.div`
   padding: 0.5em;
   text-align: center;
   align-content:flex-start;
-`
-
-const Title = styled.h4`
-  text-align: center;
 `
 
 export default ({ children, error = false, loading = false, title = '', doubleWidth = false, doubleHeight = false, background = null, active = false, onClick = null }) => {
