@@ -107,8 +107,8 @@ export default class Switch extends Component {
     const { title, textActive, textInactive } = this.props
     return (
       <Widget title={title} loading={loading} error={error} active={active} background={active ? '#ffeb3b' : '#424242'} onClick={this.handleClick.bind(this)}>
-        <div style={{ paddingTop: 2 + 'em' }}>
-          <Lightbulb size='36'/>
+        <div style={{ paddingTop: 1 + 'em' }}>
+          <Lightbulb size='48'/>
           <div>{active ? textActive : textInactive}</div>
         </div>
       </Widget>

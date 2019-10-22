@@ -14,6 +14,17 @@
   * [dark](#dark)
 * [License](#license)
 
+## Environment
+Sample .env file
+```
+WEBCAM_USER=WEBCAM HTTP USER
+WEBCAM_PASS=WEBCAM HTTP PASSWORD
+WEBCAM_IMAGE_URL=e.g. http://192.168.178.777/image/jpeg.cgi
+OSRAM_GATEWAY_BASE_IP=YOUR OSRAM GATEWAY IP e.g. 192.168.178.777
+APP_BASE_URL=http://localhost:3000
+OPEN_WEATHER_MAP_API_KEY=YOUR_OPENWEATHER_API_KEY
+```
+
 ## Installation
 
 1. [Download](../../archive/master.zip) or clone the repository.
@@ -31,9 +42,34 @@ Build your React-Matic for production with `yarn build` and then start the
 server with `yarn start`.
 
 ### RPi
-go to your app working directory and run the following commands.
+
+#### setup rspi
+- first install raspian OS - https://www.raspberrypi.org/documentation/installation/installing-images/
+- activate SSH access - https://www.google.com/search?q=raspbian+activate+ssh&oq=raspian+ac&aqs=chrome.1.69i57j0l5.4483j1j7&sourceid=chrome&ie=UTF-8
+- install docker - https://maker-tutorials.com/docker-raspberry-pi-installieren-raspbian-debian-stretch-jessie/
 ```bash
-git pull && yarn && yarn build && docker build -t react-matic . && docker stop reactMatic && docker run --name reactMatic --rm -d -p 3000:3000 react-matic
+curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+```
+- install tools
+```bash
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - 
+sudo apt-get install nodejs 
+curl -o- -L https://yarnpkg.com/install.sh | bash 
+```
+- clone project
+```bash
+git clone https://github.com/michl-b/react-matic.git
+```
+
+#### build & run container
+1. go to your app working directory and run the following commands.
+2. create .env file
+```bash
+nano .env
+```
+3. pull, build and run container
+```bash
+git pull && yarn --network-timeout 1000000 && yarn build && sudo docker build -t react-matic . && sudo docker stop reactMatic || true && sudo docker run --name reactMatic --rm -d -p 3000:3000 react-matic
 ```
 
 ### Docker

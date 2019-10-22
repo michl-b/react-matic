@@ -9,7 +9,7 @@ ENV NODE_ENV production
 
 # Install app dependencies
 COPY package.json yarn.lock /usr/src/app/
-RUN yarn --pure-lockfile && yarn cache clean
+RUN yarn --network-timeout 1000000 --pure-lockfile && yarn --network-timeout 1000000 cache clean
 
 # Bundle app source
 COPY . /usr/src/app
