@@ -5,20 +5,20 @@ import { Navbar, NavbarLink } from 'styled-navbar-component'
 import { Nav } from 'styled-nav-component'
 
 export default class NavbarDark extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       hidden: false
     }
   }
 
-  handleOpenCloseNav () {
+  handleOpenCloseNav() {
     this.setState({
       hidden: !this.state.hidden
     })
   }
 
-  render () {
+  render() {
     const { hidden } = this.state
     return (
       <Container fluid>
@@ -39,6 +39,8 @@ export default class NavbarDark extends React.Component {
           </Nav>
           <Nav start={1} collapse expandSm hidden={hidden}>
             <NavbarLink dark href='/'>Dashboard</NavbarLink>
+            <NavbarLink dark href='/deko'>Deko</NavbarLink>
+            <NavbarLink dark href='/all'>Alle Geräte</NavbarLink>
             <NavbarLink dark href='/webcams'>Webcams</NavbarLink>
           </Nav>
         </Navbar>

@@ -1,5 +1,4 @@
 import Page from '../components/page'
-import DateTime from '../components/widgets/datetime'
 import Switch from '../components/widgets/switch'
 import Sensor from '../components/widgets/sensor'
 import MotionSensor from '../components/widgets/motionsensor'
@@ -7,11 +6,9 @@ import OsramLightifyVertical from '../components/widgets/osram-lightify-vertical
 import WindowShade from '../components/widgets/window-shade'
 import AlertSystem from '../components/widgets/alert-system'
 import darkTheme from '../styles/dark-theme'
-import WeatherVertical from '../components/widgets/weather-vertical'
 
 export default () => (
   <Page theme={darkTheme} title='Dashboard'>
-    <DateTime />
     <AlertSystem
       title='Alarmsystem'
       alertVariableId='1235'
@@ -25,7 +22,9 @@ export default () => (
     <Switch title='Esszimmer' deviceId='2767' textActive='An' textInactive='Aus' />
     <Switch title='Stehlampe' deviceId='3255' textActive='An' textInactive='Aus' />
     <Switch title='Lampe Flur' deviceId='3312' textActive='An' textInactive='Aus' />
-    <Switch title='Garage/Garten außen' deviceId='1814' textActive='An' textInactive='Aus' />
+    <Switch title='Garage außen' deviceId='1814' textActive='An' textInactive='Aus' />
+    <Switch title='Haustüre außen' deviceId='3113' textActive='An' textInactive='Aus' />
+    <Switch title='Schlafzimmer Stecker' deviceId='2007' textActive='An' textInactive='Aus' />
     <WindowShade title='Rollo 3m' deviceId='2802' />
     <MotionSensor title='Bewegung Windfang' deviceId='1451' textActive='Bewegung' textInactive='Nix' />
     <Sensor title='Haustür' deviceId='1715' textActive='Offen' textInactive='Zu' />
@@ -35,7 +34,6 @@ export default () => (
     <Sensor title='Garagentor' deviceId='1870' textActive='Offen' textInactive='Zu' />
     <Sensor title='Terrassentür rechts' deviceId='2914' textActive='Offen' textInactive='Zu' />
     <Sensor title='Terrassentür links' deviceId='2859' textActive='Offen' textInactive='Zu' />
-    <WeatherVertical city='Tirschenreuth' />
     <OsramLightifyVertical
       title='Lichtleiste TV'
       mac='e1ffa200aa3eb07c'
@@ -44,5 +42,11 @@ export default () => (
       textBrightness='Helligkeit'
       textTemperature='Temperatur'
     />
+    <Switch title='Garten Deko' deviceId='1279' textActive='An' textInactive='Aus' />
+    <Switch title='Küche Deko' deviceId='4771' textActive='An' textInactive='Aus' />
+    <Switch title='Jonas Deko' deviceId='4828' textActive='An' textInactive='Aus' />
+    <Switch title='Johannes Deko' deviceId='4885' textActive='An' textInactive='Aus' />
+    <Switch title='Christbaum' deviceId='4942' textActive='An' textInactive='Aus' />
+
   </Page>
 )
