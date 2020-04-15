@@ -26,6 +26,8 @@ export default () => (
     <Switch title='Stehlampe' deviceId='3255' textActive='An' textInactive='Aus' />
     <Switch title='Lampe Flur' deviceId='3312' textActive='An' textInactive='Aus' />
     <Switch title='Garage/Garten außen' deviceId='1814' textActive='An' textInactive='Aus' />
+    <Switch title='Brunnen' deviceId='8412' textActive='An' textInactive='Aus' />
+    
     <WindowShade title='Rollo 3m' deviceId='2802' />
     <MotionSensor title='Bewegung Windfang' deviceId='1451' textActive='Bewegung' textInactive='Nix' />
     <Sensor title='Haustür' deviceId='1715' textActive='Offen' textInactive='Zu' />

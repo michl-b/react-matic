@@ -48,5 +48,6 @@ export default () => (
     <Switch title='Johannes Deko' deviceId='4885' textActive='An' textInactive='Aus' />
     <Switch title='Esszimmer Deko' deviceId='5171' textActive='An' textInactive='Aus' />
     <Switch title='Christbaum' deviceId='4942' textActive='An' textInactive='Aus' />
+    <Switch title='Brunnen' deviceId='8412' textActive='An' textInactive='Aus' />
   </Page>
 )

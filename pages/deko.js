@@ -6,6 +6,7 @@ import darkTheme from '../styles/dark-theme'
 export default () => (
   <Page theme={darkTheme} title='Deko'>
     <DateTime />
+    <Switch title='Brunnen' deviceId='8412' textActive='An' textInactive='Aus' />
     <Switch title='Schlafzimmer Stecker' deviceId='2007' textActive='An' textInactive='Aus' />
     <Switch title='Haustüre außen' deviceId='3113' textActive='An' textInactive='Aus' />
     <Switch title='Garten Deko' deviceId='1279' textActive='An' textInactive='Aus' />
