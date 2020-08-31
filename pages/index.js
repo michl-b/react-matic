@@ -37,6 +37,7 @@ export default () => (
     <Sensor title='Garagentor' deviceId='1870' textActive='Offen' textInactive='Zu' />
     <Sensor title='Terrassentür rechts' deviceId='2914' textActive='Offen' textInactive='Zu' />
     <Sensor title='Terrassentür links' deviceId='2859' textActive='Offen' textInactive='Zu' />
+    <Sensor title='Fenster Büro' deviceId='8526' textActive='Offen' textInactive='Zu' />
     <WeatherVertical city='Tirschenreuth' />
     <OsramLightifyVertical
       title='Lichtleiste TV'

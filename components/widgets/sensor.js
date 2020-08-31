@@ -58,7 +58,7 @@ export default class Sensor extends Component {
         const message = await res.text()
 
         xml2js.parseString(message, function (err, result) {
-          newActive = result.state.datapoint[0].$.value === 'true'
+          newActive = result.state.datapoint[0].$.value === 'true' || result.state.datapoint[0].$.value === '1'
         })
       } else {
         newActive = !this.state.active
