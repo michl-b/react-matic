@@ -9,7 +9,7 @@ export default () => (
     <Switch title='Brunnen' deviceId='8412' textActive='An' textInactive='Aus' />
     <Switch title='Schlafzimmer Stecker' deviceId='2007' textActive='An' textInactive='Aus' />
     <Switch title='Haustüre außen' deviceId='3113' textActive='An' textInactive='Aus' />
-    <Switch title='Garten Deko' deviceId='1279' textActive='An' textInactive='Aus' />
+    <Switch title='Pool' deviceId='1279' textActive='An' textInactive='Aus' />
     <Switch title='Küche Deko' deviceId='4771' textActive='An' textInactive='Aus' />
     <Switch title='Jonas Deko' deviceId='4828' textActive='An' textInactive='Aus' />
     <Switch title='Johannes Deko' deviceId='4885' textActive='An' textInactive='Aus' />
