@@ -2,7 +2,6 @@ import Head from 'next/head'
 import styled, { injectGlobal, ThemeProvider } from 'styled-components'
 import { normalize } from 'polished'
 import NavbarDark from './../components/navbardark'
-import { name } from '../package'
 
 injectGlobal`
   ${normalize()}
@@ -19,7 +18,6 @@ const Container = styled.main`
   flex-flow: row wrap;
   justify-content: center;
   align-content:flex-start;
-  zoom: 0.75;
   min-height: 150vh;
   padding: 0.5em;
 `
