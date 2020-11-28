@@ -8,7 +8,7 @@ const Container = styled.div`
   height: ${props => props.doubleHeight ? '20.2em' : '9em'};
   align-items: center;
   background-color: ${props => props.background ? props.background : props.theme.palette.canvasColor};
-  color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
+  color: ${props => props.color ? props.color : props.theme.palette.textColor};
   border: 1px solid ${props => props.theme.palette.borderColor};
   border-radius: 10px;
   display: flex;
@@ -20,7 +20,7 @@ const Container = styled.div`
   align-content:flex-start;
 `
 
-export default ({ children, error = false, loading = false, title = '', doubleWidth = false, doubleHeight = false, background = null, active = false, onClick = null }) => {
+const Widget = ({ children, error = false, loading = false, title = '', doubleWidth = false, doubleHeight = false, background = null, color = null, active = false, onClick = null }) => {
   let content
 
   if (loading) {
@@ -37,6 +37,7 @@ export default ({ children, error = false, loading = false, title = '', doubleWi
       doubleWidth={doubleWidth}
       doubleHeight={doubleHeight}
       background={background}
+      color={color}
       active={active}
       onClick={onClick}>
       {title ? <Title>{title}</Title> : ''}
@@ -44,3 +45,5 @@ export default ({ children, error = false, loading = false, title = '', doubleWi
     </Container>
   )
 }
+
+export default Widget;

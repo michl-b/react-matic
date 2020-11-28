@@ -5,45 +5,15 @@ import Widget from '../widget'
 import xml2js from 'xml2js'
 import axios from 'axios'
 import { Lightbulb } from 'styled-icons/fa-regular/Lightbulb.cjs'
+import HmDevice from './hmDevice'
 
-const schema = object().shape({
-  deviceId: number().required(),
-  statusUrl: string(),
-  actionUrl: string(),
-  interval: number(),
-  readOnly: boolean(),
-  title: string(),
-  testMode: boolean()
-})
-
-export default class Switch extends Component {
-  static defaultProps = {
-    interval: 1000 * 5,
-    title: 'Switch',
-    readOnly: false,
-    statusUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}',
-    actionUrl: 'http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}',
-    testMode: false,
-    textActive: 'On',
-    textInactive: 'Off'
-  }
-
-  state = {
-    active: false,
-    error: false,
-    loading: true
-  }
-
-  constructor (props) {
-    super(props)
-    this.state = { active: false }
-  }
-
+class Switch extends HmDevice {
   handleClick () {
+    const actionUrl = 'http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={datapointId}&new_value={value}'
     if (!this.props.testMode) {
       if (this.props.readOnly === false) {
-        var url = this.props.actionUrl.replace('{deviceId}',
-          this.props.deviceId)
+        var url = actionUrl.replace('{datapointId}',
+          this.props.datapointId)
         url = url.replace('{value}', !this.state.active)
         let newActive = this.state.active
         axios.get(url)
@@ -61,52 +31,11 @@ export default class Switch extends Component {
     }
   }
 
-  componentDidMount () {
-    schema.validate(this.props)
-      .then(() => this.fetchInformation())
-      .catch((err) => {
-        console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({ error: true, loading: false })
-      })
-  }
-
-  componentWillUnmount () {
-    clearTimeout(this.timeout)
-  }
-
-  async fetchInformation () {
-    const { statusUrl, deviceId } = this.props
-
-    try {
-      let newActive = this.state.active
-      const url = statusUrl.replace('{deviceId}', deviceId)
-
-      if (this.props.testMode) {
-        newActive = !this.state.active
-      } else {
-        const res = await fetch(url)
-        const message = await res.text()
-
-        xml2js.parseString(message, function (err, result) {
-          newActive = result.state.datapoint[0].$.value === 'true'
-        })
-      }
-
-      this.setState({ active: newActive, error: false, loading: false })
-    } catch (error) {
-      console.log(error)
-      this.setState({ error: true, loading: false })
-    } finally {
-      this.timeout = setTimeout(() => this.fetchInformation(),
-        this.props.interval)
-    }
-  }
-
   render () {
     const { error, loading, active } = this.state
     const { title, textActive, textInactive } = this.props
     return (
-      <Widget title={title} loading={loading} error={error} active={active} background={active ? '#ffeb3b' : '#424242'} onClick={this.handleClick.bind(this)}>
+      <Widget title={title} loading={loading} error={error} active={active} color={active ? '#303030' : '#ffffff'} background={active ? '#ffeb3b' : '#424242'} onClick={this.handleClick.bind(this)}>
         <div style={{ paddingTop: 1 + 'em' }}>
           <Lightbulb size='48'/>
           <div>{active ? textActive : textInactive}</div>
@@ -115,3 +44,5 @@ export default class Switch extends Component {
     )
   }
 }
+
+export default Switch;

@@ -19,7 +19,8 @@ const Container = styled.main`
   flex-flow: row wrap;
   justify-content: center;
   align-content:flex-start;
-  min-height: 100vh;
+  zoom: 0.75;
+  min-height: 150vh;
   padding: 0.5em;
 `
 

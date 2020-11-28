@@ -13,6 +13,7 @@ const Label = styled.div`
 `
 
 const schema = object().shape({
+  datapointId: number().required(),
   deviceId: number().required(),
   statusUrl: string(),
   actionUrl: string(),
@@ -25,8 +26,9 @@ export default class WindowShade extends Component {
   static defaultProps = {
     interval: 1000 * 5,
     title: 'Window Shade',
-    actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={deviceId}&new_value={value}`,
-    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={deviceId}`,
+    actionUrl: `http://homematic-raspi/addons/xmlapi/statechange.cgi?ise_id={datapointId}&new_value={value}`,
+    statusUrl: `http://homematic-raspi/addons/xmlapi/state.cgi?datapoint_id={datapointId}`,
+    deviceUrl: 'http://homematic-raspi/addons/xmlapi/state.cgi?device_id=',
     testMode: false
   }
 
@@ -43,7 +45,7 @@ export default class WindowShade extends Component {
 
   handleChange (event) {
     if (!this.props.testMode) {
-      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      var url = this.props.actionUrl.replace('{datapointId}', this.props.datapointId)
       url = url.replace('{value}', event.target.value)
       axios.get(url)
         .catch((err) => {
@@ -56,7 +58,7 @@ export default class WindowShade extends Component {
 
   handleClick (value) {
     if (!this.props.testMode) {
-      var url = this.props.actionUrl.replace('{deviceId}', this.props.deviceId)
+      var url = this.props.actionUrl.replace('{datapointId}', this.props.datapointId)
       url = url.replace('{value}', value)
       axios.get(url)
         .catch((err) => {
@@ -81,11 +83,12 @@ export default class WindowShade extends Component {
   }
 
   async fetchInformation () {
-    const { statusUrl, deviceId } = this.props
+    const { deviceUrl, statusUrl, deviceId, datapointId } = this.props
 
     try {
       let newValue = this.state.value
-      const url = statusUrl.replace('{deviceId}', deviceId)
+      let newError = false
+      const url = statusUrl.replace('{datapointId}', datapointId)
       if (!this.props.testMode) {
         const res = await fetch(url)
         const message = await res.text()
@@ -97,7 +100,13 @@ export default class WindowShade extends Component {
         newValue = 0.550000
       }
 
-      this.setState({ value: newValue, error: false, loading: false })
+      const resDevice = await fetch(`${deviceUrl}${deviceId}`)
+      const messageDevice = await resDevice.text()
+      xml2js.parseString(messageDevice, function (err, result) {
+        newError = result.state.device[0].$.unreach === 'true' || result.state.device[0].$.unreach === '1'
+      })
+
+      this.setState({ value: newValue, error: newError, loading: false })
     } catch (error) {
       console.log(error)
       this.setState({ error: true, loading: false })
@@ -113,7 +122,7 @@ export default class WindowShade extends Component {
     let intValue = parseInt((parseFloat(value)) * 100)
     return (
       <Widget doubleWidth title={title} loading={loading} error={error}>
-        <Label>{intValue}%</Label>
+        <Label>{intValue + ' %'}</Label>
         <div style={{ paddingTop: 1 + 'em', paddingBottom: 1 + 'em' }} >
           <VerticalList doubleWidth>
             <ActionButtonSmall

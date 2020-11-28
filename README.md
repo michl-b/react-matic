@@ -45,18 +45,34 @@ server with `yarn start`.
 
 #### setup rspi
 - first install raspian OS - https://www.raspberrypi.org/documentation/installation/installing-images/
+- https://www.maclife.de/ratgeber/raspberry-pi-am-mac-einrichten-gehts-100113322.html
 - activate SSH access - https://www.google.com/search?q=raspbian+activate+ssh&oq=raspian+ac&aqs=chrome.1.69i57j0l5.4483j1j7&sourceid=chrome&ie=UTF-8
-- install docker - https://maker-tutorials.com/docker-raspberry-pi-installieren-raspbian-debian-stretch-jessie/
+
+##### install docker
 ```bash
-curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+curl -sSL https://get.docker.com | sh
+sudo usermod -aG docker pi
+# reboot
+sudo reboot
+
+#try
+docker run hello-world
 ```
-- install tools
+
+##### install tools
 ```bash
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - 
-sudo apt-get install nodejs 
-curl -o- -L https://yarnpkg.com/install.sh | bash 
+
+#yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update 
+sudo apt-get install nodejs npm git yarn
+yarn --version
+npm --version
+node --version
 ```
-- clone project
+
+##### clone project
 ```bash
 git clone https://github.com/michl-b/react-matic.git
 ```
@@ -69,7 +85,19 @@ nano .env
 ```
 3. pull, build and run container
 ```bash
-git pull && yarn --network-timeout 1000000 && yarn build && sudo docker build -t react-matic . && sudo docker stop reactMatic || true && sudo docker run --name reactMatic --rm -d -p 3000:3000 react-matic
+git pull && yarn --network-timeout 1000000 && yarn build && docker build -t react-matic . && docker stop reactMatic || true && docker run --name reactMatic --rm -d -p 3000:3000 react-matic
+```
+
+#### add to autorun
+```bash
+sudo nano /etc/rc.local 
+
+#add line before exit 0
+docker run --name reactMatic --rm -d -p 3000:3000 react-matic
+# save and exit
+
+#try
+sudo reboot
 ```
 
 ### Docker

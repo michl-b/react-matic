@@ -41,7 +41,6 @@ export default class NavbarDark extends React.Component {
             <NavbarLink dark href='/'>Dashboard</NavbarLink>
             <NavbarLink dark href='/deko'>Deko</NavbarLink>
             <NavbarLink dark href='/all'>Alle Geräte</NavbarLink>
-            <NavbarLink dark href='/webcams'>Webcams</NavbarLink>
           </Nav>
         </Navbar>
       </Container>

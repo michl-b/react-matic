@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import myEnv from '../../myenv'
+import VerticalList from '../vertival-list'
 
 const schema = object().shape({
   city: string().required(),
@@ -41,7 +42,7 @@ export default class Weather extends Component {
       .then(() => this.fetchInformation())
       .catch((err) => {
         console.error(`${err.name} @ ${this.constructor.name}`, err.errors)
-        this.setState({error: true, loading: false})
+        this.setState({ error: true, loading: false })
       })
   }
 
@@ -63,7 +64,8 @@ export default class Weather extends Component {
           icon: jsonResult.weather[0].icon,
           wind: jsonResult.wind.speed,
           error: false,
-          loading: false })
+          loading: false
+        })
       } else {
         this.setState({ temperature: '99.99', description: 'Rain', error: false, loading: false })
       }
@@ -83,13 +85,19 @@ export default class Weather extends Component {
     const iconUrl = 'http://openweathermap.org/img/w/' + icon + '.png'
 
     return (
-      <Widget doubleHeight title={city} loading={loading} error={error}>
-        <img src={iconUrl} width='50' />
-        <div>{description}</div>
-        <h1>{temperature} °C</h1>
-        <h4>Wind: {wind} km/h</h4>
-        <h4>Feucht.: {humidity} %</h4>
-        <h4>Luftdr.: {pressure} hPa</h4>
+      <Widget doubleWidth title={city} loading={loading} error={error}>
+        <VerticalList>
+          <div>
+            <img src={iconUrl} width='50' />
+            <div>{description}</div>
+            <div style={{ fontSize: '30px', fontWeight: 'bold', paddingTop: 10 + 'px' }}>{temperature} °C</div>
+          </div>
+          <div>
+            <p>Wind: {wind} km/h</p>
+            <p>Feucht.: {humidity} %</p>
+            <p>Luftdr.: {pressure} hPa</p>
+          </div>
+        </VerticalList>
       </Widget>
     )
   }

@@ -8,9 +8,8 @@ import Program from '../components/widgets/program'
 import OsramLightify from '../components/widgets/osram-lightify'
 import WindowShade from '../components/widgets/window-shade'
 import darkTheme from '../styles/dark-theme'
-import Webcam from '../components/widgets/webcam'
 
-export default () => (
+const DemoPage = () => (
   <Page theme={darkTheme} title='Demo of Components'>
     <DateTime />
 
@@ -48,9 +47,7 @@ export default () => (
       deviceId='1451'
       testMode={true}
     />
-
-    <Webcam
-      testMode={true}
-    />
   </Page>
 )
+
+export default DemoPage;

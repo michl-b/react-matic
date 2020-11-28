@@ -2,29 +2,10 @@ import { Component } from 'react'
 import { boolean, number, object, string } from 'yup'
 import Widget from '../widget'
 import axios from 'axios'
-import { HuePicker } from 'react-color'
-import styled from 'styled-components'
 import myEnv from '../../myenv'
 import VerticalList from '../vertival-list'
 import ActionButtonSmall from '../action-button-small'
-import Title from '../title'
-
-const Status = styled.div`
-  width: 18em;
-  height: 6em;
-  align-items: center;
-  background-color: ${props => props.active ? props.theme.palette.lightOnColor : props.theme.palette.canvasColor};
-  color: ${props => props.active ? props.theme.palette.textInvertColor : props.theme.palette.textColor};
-  border: 1px solid ${props => props.theme.palette.borderColor};
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin: 0.5em;
-  padding: 0.5em;
-  text-align: center;
-  align-content:flex-start;
-`
+import { HuePicker } from 'react-color'
 
 const schema = object().shape({
   mac: string().required(),
@@ -167,42 +148,34 @@ export default class OsramLightify extends Component {
   }
 
   render () {
-    const { error, loading, brightness, temperature } = this.state
-    const { title, textOff, textOn, textBrightness, textTemperature } = this.props
+    const { error, loading } = this.state
+    const { title, textOff } = this.props
 
     const active = this.state.status === 1
 
     return (
-      <Widget doubleWidth doubleHeight loading={loading} error={error}>
-        <Status doubleWidth active={active} onClick={this.handleOnOff.bind(this)}>
-          <Title>{title}</Title>
-          <div>{textBrightness}: {brightness}%</div>
-          <div>{textTemperature}: {temperature} Kelvin</div>
-        </Status>
-
-        <HuePicker
-          color={this.state.color}
-          onChangeComplete={this.handleChangeColorComplete.bind(this)}
-        />
-
-        <p>{textBrightness}</p>
-        <VerticalList doubleWidth>
+      <Widget doubleWidth title={title} loading={loading} error={error} active={active} background={active ? '#ffeb3b' : '#424242'}>
+        <VerticalList>
           <ActionButtonSmall
             onClick={this.handleChangeBrightness.bind(this, '0')}>{textOff}</ActionButtonSmall>
           <ActionButtonSmall
             onClick={this.handleChangeBrightness.bind(this, '50')}>50%</ActionButtonSmall>
           <ActionButtonSmall
-            onClick={this.handleChangeBrightness.bind(this, '100')}>{textOn}</ActionButtonSmall>
+            onClick={this.handleChangeBrightness.bind(this, '100')}>100%</ActionButtonSmall>
         </VerticalList>
-
-        <p>{textTemperature}</p>
+        <div style={{ paddingTop: 1 + 'em', paddingBottom: 1 + 'em' }} >
+          <HuePicker
+            color={this.state.color}
+            onChangeComplete={this.handleChangeColorComplete.bind(this)}
+          />
+        </div>
         <VerticalList doubleWidth>
           <ActionButtonSmall
-            onClick={this.handleChangeTemperature.bind(this, '2700')}>2700</ActionButtonSmall>
+            onClick={this.handleChangeTemperature.bind(this, '2700')}>2700k</ActionButtonSmall>
           <ActionButtonSmall
-            onClick={this.handleChangeTemperature.bind(this, '4000')}>4000</ActionButtonSmall>
+            onClick={this.handleChangeTemperature.bind(this, '4000')}>4000k</ActionButtonSmall>
           <ActionButtonSmall
-            onClick={this.handleChangeTemperature.bind(this, '6500')}>6500</ActionButtonSmall>
+            onClick={this.handleChangeTemperature.bind(this, '6500')}>6500k</ActionButtonSmall>
         </VerticalList>
       </Widget>
     )
