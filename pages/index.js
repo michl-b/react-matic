@@ -23,7 +23,7 @@ const IndexPage = () => (
       textSystemInactive='Aus'
       textAlertActive='Alarm'
       textAlertInactive='Sicher' />
-    <Switch title='Esszimmer' datapointId='2767' deviceId='2730' textActive='An' textInactive='Aus' />
+    <Switch title='Esszimmer' datapointId='9002' deviceId='8965' textActive='An' textInactive='Aus' />
     <Switch title='Stehlampe' datapointId='3255' deviceId='3215' textActive='An' textInactive='Aus' />
     <Switch title='Lampe Flur' datapointId='3312' deviceId='3272' textActive='An' textInactive='Aus' />
     <Switch title='Garage/Garten außen' datapointId='1814' deviceId='1777' textActive='An' textInactive='Aus' />
